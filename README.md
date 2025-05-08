@@ -48,3 +48,113 @@ A Spring Boot server for collecting, storing, and analyzing error logs with REST
 * **Extensibility:** Pluggable architecture for custom AI models or storage backends.
 * **Reliability:** Fault-tolerant with retries and backup mechanisms.
 
+## Setup Guide
+
+### Prerequisites
+
+- Java 17 or higher
+- Maven 3.8 or higher
+- PostgreSQL 13 or higher (or your preferred database)
+- Docker (optional, for containerized deployment)
+
+### Local Development Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/kenya-jug/regression.git
+   cd regression
+   ```
+
+2. **Configure the database**
+   - Create a PostgreSQL database named `regression`
+   - Update `src/main/resources/application.properties` with your database credentials:
+     ```properties
+     spring.datasource.url=jdbc:postgresql://localhost:5432/regression
+     spring.datasource.username=your_username
+     spring.datasource.password=your_password
+     ```
+
+3. **Build the project**
+   ```bash
+   mvn clean install
+   ```
+
+4. **Run the application**
+   ```bash
+   mvn spring-boot:run
+   ```
+   The server will start on `http://localhost:8080`
+
+### Docker Deployment
+
+1. **Build the Docker image**
+   ```bash
+   docker build -t regression .
+   ```
+
+2. **Run the container**
+   ```bash
+   docker run -p 8080:8080 regression
+   ```
+
+### API Documentation
+
+Once the application is running, you can access the API documentation at:
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- OpenAPI Specification: `http://localhost:8080/v3/api-docs`
+
+### Environment Variables
+
+The following environment variables can be configured:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `SERVER_PORT` | Port to run the application | 8080 |
+| `SPRING_PROFILES_ACTIVE` | Active Spring profile | dev |
+| `JWT_SECRET` | Secret key for JWT tokens | (required in production) |
+
+### Troubleshooting
+
+- If you encounter database connection issues, ensure PostgreSQL is running and the credentials are correct
+- For port conflicts, change the `SERVER_PORT` environment variable
+- Check the application logs for detailed error messages
+
+### Development Workflow
+
+1. **Running Tests**
+   ```bash
+   mvn test
+   ```
+
+2. **Code Style Check**
+   ```bash
+   mvn checkstyle:check
+   ```
+
+3. **Generating Documentation**
+   ```bash
+   mvn javadoc:javadoc
+   ```
+
+### Contributing
+
+1. Create a new branch for your feature
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+2. Make your changes and commit them
+   ```bash
+   git add .
+   git commit -m "Description of your changes"
+   ```
+
+3. Push your changes and create a pull request
+
+### Support
+
+For additional help or questions:
+- Open an issue on GitHub
+- Check the [Wiki](https://github.com/kenya-jug/regression/wiki) for detailed documentation
+- Join our [Discord community](https://discord.gg/kenya-jug)
+
