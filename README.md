@@ -48,3 +48,24 @@ A Spring Boot server for collecting, storing, and analyzing error logs with REST
 * **Extensibility:** Pluggable architecture for custom AI models or storage backends.
 * **Reliability:** Fault-tolerant with retries and backup mechanisms.
 
+
+
+
+
+<!-- coverage start -->
+## 📊 Code Coverage Report
+
+**Overall Coverage: 100.00% ✅**
+
+| Metric      | Covered | Missed | Total | Coverage  |
+|-------------|---------|--------|-------|-----------|
+| INSTRUCTION | 20      | 0      | 20    | 100.00% ✅ |
+| LINE        | 5       | 0      | 5     | 100.00% ✅ |
+| BRANCH      |         |        | 0     | 0% ⚠️     |
+| METHOD      | 4       | 0      | 4     | 100.00% ✅ |
+| CLASS       | 2       | 0      | 2     | 100.00% ✅ |
+| COMPLEXITY  | 4       | 0      | 4     | 100.00% ✅ |
+
+### 🚨 Least Tested Elements (coverage below 50%)
+- BRANCH: 0%
+<!-- coverage end -->
