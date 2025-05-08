@@ -48,6 +48,7 @@ A Spring Boot server for collecting, storing, and analyzing error logs with REST
 * **Extensibility:** Pluggable architecture for custom AI models or storage backends.
 * **Reliability:** Fault-tolerant with retries and backup mechanisms.
 
+
 ## Setup Guide
 
 ### Prerequisites
@@ -193,4 +194,3 @@ N/A - Documentation changes only
 - The setup guide follows best practices for Spring Boot applications
 - Instructions are clear and suitable for both new and experienced developers
 - Added both local development and Docker deployment options
-
