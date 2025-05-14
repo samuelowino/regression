@@ -3,6 +3,8 @@ A Spring Boot server for collecting, storing, and analyzing error logs with REST
 
 ### **Regression – Requirements Specification**
 
+![Project Overview](/specification/assets/diagram.png)
+
 **Overview:**
 **Regression** is a Spring Boot-based server for collecting, storing, and analyzing application error logs. It provides RESTful APIs for log ingestion and retrieval, with AI-driven analysis to detect anomalies, trends, and root causes.
 
@@ -215,17 +217,31 @@ N/A - Documentation changes only
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- coverage start -->
 ## 📊 Code Coverage Report
 
 **Overall Coverage: 100.00% ✅**
 
-| Metric      | Covered | Missed | Total | Coverage |
-|-------------|---------|--------|--------|----------|
-| INSTRUCTION | 1015 | 0 | 1015 | 100.00% ✅ |
-| LINE | 299 | 0 | 299 | 100.00% ✅ |
-| BRANCH | 8 | 0 | 8 | 100.00% ✅ |
-| METHOD | 71 | 0 | 71 | 100.00% ✅ |
-| CLASS | 11 | 0 | 11 | 100.00% ✅ |
-| COMPLEXITY | 75 | 0 | 75 | 100.00% ✅ |
+| Metric      | Covered | Missed | Total | Coverage  |
+|-------------|---------|--------|-------|-----------|
+| INSTRUCTION | 1562    | 0      | 1562  | 100.00% ✅ |
+| LINE        | 442     | 0      | 442   | 100.00% ✅ |
+| BRANCH      | 16      | 0      | 16    | 100.00% ✅ |
+| METHOD      | 113     | 0      | 113   | 100.00% ✅ |
+| CLASS       | 20      | 0      | 20    | 100.00% ✅ |
+| COMPLEXITY  | 121     | 0      | 121   | 100.00% ✅ |
 <!-- coverage end -->

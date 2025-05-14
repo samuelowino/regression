@@ -36,3 +36,13 @@ CREATE TABLE IF NOT EXISTS logs_metadata (
 
     CONSTRAINT fk_logs_metadata_log FOREIGN KEY (log_uuid) REFERENCES app_logs(uuid)
 );
+
+CREATE TABLE IF NOT EXISTS LogsDataSource (
+    uuid VARCHAR(36) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    source_type VARCHAR(50) CHECK (source_type IN ('local', 'API', 'Form')),
+    application_id VARCHAR(36),
+    created_at TEXT,
+    log_file_path TEXT,
+    CONSTRAINT fk_application FOREIGN KEY (application_id) REFERENCES applications(uuid) ON DELETE SET NULL
+);

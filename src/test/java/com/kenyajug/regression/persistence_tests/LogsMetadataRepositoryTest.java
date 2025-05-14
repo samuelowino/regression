@@ -25,7 +25,6 @@ package com.kenyajug.regression.persistence_tests;
 import com.kenyajug.regression.entities.LogsMetadata;
 import com.kenyajug.regression.repository.LogsMetadataRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

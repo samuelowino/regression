@@ -50,6 +50,10 @@ public class UserRepositoryTest {
                 """;
         jdbcClient.sql(clearTable).update();
     }
+    @BeforeEach
+    public void setUp(){
+        cleanUp();
+    }
     @Test
     public void shouldSaveObjectTest(){
         var entity = new User(
@@ -197,5 +201,46 @@ public class UserRepositoryTest {
         assertThat(persisted.password()).isEqualTo("encoded_password_2");
         assertThat(persisted.roles_list_json()).isEqualTo("{viewer}");
         assertThat(DateTimeUtils.localDateTimeToUTCTime(persisted.created_at())).isEqualTo("2030-08-11 11:09:22 UTC");
+    }
+    @Test
+    public void shouldFindByUsernameObjectsTest(){
+        var entity1 = new User(
+                "UUID1",
+                "milatelvi1@email.com",
+                "encoded_password_",
+                "{admin}",
+                DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime("2025-08-11 11:09:22 UTC")
+        );
+        var entity2 = new User(
+                "UUID2",
+                "milaflex2@email.com",
+                "encoded_password_",
+                "{viewer}",
+                DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime("2025-08-11 11:09:22 UTC")
+        );
+        userRepository.save(entity1);
+        userRepository.save(entity2);
+        var optionalUser = userRepository.findByUsername("milaflex2@email.com");
+        assertThat(optionalUser).isNotEmpty();
+        var persisted = optionalUser.get();
+        assertThat(persisted).isNotNull();
+        assertThat(persisted.uuid()).isEqualTo("UUID2");
+        assertThat(persisted.username()).isEqualTo("milaflex2@email.com");
+        assertThat(persisted.password()).isEqualTo("encoded_password_");
+        assertThat(persisted.roles_list_json()).isEqualTo("{viewer}");
+        assertThat(DateTimeUtils.localDateTimeToUTCTime(persisted.created_at())).isEqualTo("2025-08-11 11:09:22 UTC");
+    }
+    @Test
+    public void should_CheckExistsByUsernameObjects_Test(){
+        var entity = new User(
+                "UUID1",
+                "milatelvi1@email.com",
+                "encoded_password_",
+                "{admin}",
+                DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime("2025-08-11 11:09:22 UTC")
+        );
+        userRepository.save(entity);
+        var exists = userRepository.existsByUsername("milatelvi1@email.com");
+        assertThat(exists).isTrue();
     }
 }

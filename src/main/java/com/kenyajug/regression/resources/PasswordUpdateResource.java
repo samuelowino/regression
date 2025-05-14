@@ -1,4 +1,4 @@
-package com.kenyajug.regression.entities;
+package com.kenyajug.regression.resources;
 /*
  * MIT License
  *
@@ -22,13 +22,8 @@ package com.kenyajug.regression.entities;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import java.time.LocalDateTime;
-public record AppLog(
-        String uuid,
-        LocalDateTime timestamp,
-        String severity,
-        String applicationId,
-        String logSource,
-        String message
-) {
+public record PasswordUpdateResource(
+        String currentPassword,
+        String newPassword,
+        String confirmPassword) {
 }
