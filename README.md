@@ -3,7 +3,7 @@ A Spring Boot server for collecting, storing, and analyzing error logs with REST
 
 ### **Regression – Requirements Specification**
 
-![Project Overview](/specification/assets/diagram.png)
+![Project Overview Diagram](/specification/assets/diagram.png)
 
 **Overview:**
 **Regression** is a Spring Boot-based server for collecting, storing, and analyzing application error logs. It provides RESTful APIs for log ingestion and retrieval, with AI-driven analysis to detect anomalies, trends, and root causes.
