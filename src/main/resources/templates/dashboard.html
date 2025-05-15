@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--
+  MIT License
+
+  Copyright (c) 2025 Kenya JUG
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Regression Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../static/css/dashboard.css" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+<div class="sidebar">
+    <h1>Regression</h1>
+    <a class="nav-link" th:href="@{/}">🏠 Dashboard</a>
+    <a class="nav-link" th:href="@{/data-sources}">📁 Data Sources</a>
+    <a class="nav-link" th:href="@{/apps-platforms}">🧩 Apps & Platforms</a>
+    <a class="nav-link" th:href="@{/user/form}">🔒 Change Admin Password</a>
+    <div class="logout">
+        <a class="nav-link" th:href="@{/logout}">🚪 Logout</a>
+    </div>
+</div>
+<div class="main-content">
+    <h2>Welcome to the Regression Dashboard</h2>
+
+    <div class="card">
+        <h3>📈 Incoming Logs Today</h3>
+        <canvas id="todayLogsChart"></canvas>
+    </div>
+
+    <div class="card">
+        <h3>🧩 Connected Apps and Platforms</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="app : ${apps}">
+                <td th:text="${app.name}">App Name</td>
+                <td th:text="${app.type}">API</td>
+                <td th:text="${app.status}">Connected</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h3>📁 Data Sources</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Source Type</th>
+                <th>Created</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="source : ${dataSources}">
+                <td th:text="${source.name}">Local File</td>
+                <td th:text="${source.sourceType}">local</td>
+                <td th:text="${source.createdAt}">2025-05-01</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h3>🕒 Recent Processed Logs</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Source</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="log : ${logs}">
+                <td th:text="${log.timestamp}">2025-05-14 10:00</td>
+                <td th:text="${log.sourceName}">Data Source 1</td>
+                <td th:text="${log.status}">Success</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src ="../static/js/charts.js" th:src="@{/js/charts.js}"></script>
+</body>
+</html>

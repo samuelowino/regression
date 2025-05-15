@@ -22,7 +22,6 @@ package com.kenyajug.regression.repository;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -33,7 +32,7 @@ import java.util.Optional;
  * @param <T> the type of the entity managed by this repository
  */
 public sealed interface CrudRepository<T>
-        permits AppLogRepository, ApplicationsRepository, LogsMetadataRepository, UserRepository
+        permits AppLogRepository, ApplicationsRepository, LogsMetadataRepository, UserRepository, LogsDataSourceRepository
 {
 
     /**

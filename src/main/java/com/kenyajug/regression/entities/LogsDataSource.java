@@ -23,12 +23,12 @@ package com.kenyajug.regression.entities;
  * SOFTWARE.
  */
 import java.time.LocalDateTime;
-public record AppLog(
+public record LogsDataSource(
         String uuid,
-        LocalDateTime timestamp,
-        String severity,
+        String name,
+        String sourceType,//Can be local,API,Form
         String applicationId,
-        String logSource,
-        String message
+        LocalDateTime createdAt,
+        String logFilePath
 ) {
 }

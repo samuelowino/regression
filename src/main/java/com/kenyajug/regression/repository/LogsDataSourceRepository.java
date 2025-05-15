@@ -22,7 +22,8 @@ package com.kenyajug.regression.repository;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import com.kenyajug.regression.entities.LogsMetadata;
+import com.kenyajug.regression.entities.LogsDataSource;
+import com.kenyajug.regression.utils.DateTimeUtils;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -30,10 +31,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 @Repository
-public non-sealed class LogsMetadataRepository implements CrudRepository<LogsMetadata>{
+public non-sealed class LogsDataSourceRepository implements CrudRepository<LogsDataSource> {
     private final JdbcClient jdbcClient;
     private final TransactionTemplate transactionTemplate;
-    public LogsMetadataRepository(JdbcClient jdbcClient, TransactionTemplate transactionTemplate) {
+    public LogsDataSourceRepository(JdbcClient jdbcClient, TransactionTemplate transactionTemplate) {
         this.jdbcClient = jdbcClient;
         this.transactionTemplate = transactionTemplate;
     }
@@ -44,29 +45,34 @@ public non-sealed class LogsMetadataRepository implements CrudRepository<LogsMet
      * @param entity the entity to save (must not be {@code null})
      */
     @Override
-    public void save(LogsMetadata entity) {
+    public void save(LogsDataSource entity) {
         transactionTemplate.executeWithoutResult(status -> {
             var insertSql = """
-                 INSERT INTO logs_metadata (
-                     uuid,
-                     log_uuid,
-                     metadata_type,
-                     metadata_value
-                 ) VALUES (
-                     :uuid,
-                     :log_uuid,
-                     :metadata_type,
-                     :metadata_value
-                 );
-                 
-                 """;
-            jdbcClient
-                    .sql(insertSql)
+                        INSERT INTO logs_data_source (
+                            uuid,
+                            name,
+                            source_type,
+                            application_id,
+                            created_at,
+                            log_file_path
+                        ) VALUES (
+                            :uuid,
+                            :name,
+                            :source_type,
+                            :application_id,
+                            :created_at,
+                            :log_file_path
+                        )
+                    """;
+            jdbcClient.sql(insertSql)
                     .param("uuid", entity.uuid())
-                    .param("log_uuid", entity.logId())
-                    .param("metadata_type", entity.metadataType())
-                    .param("metadata_value", entity.metadataValue())
+                    .param("name", entity.name())
+                    .param("source_type", entity.sourceType())
+                    .param("application_id", entity.applicationId())
+                    .param("created_at", DateTimeUtils.localDateTimeToUTCTime(entity.createdAt()))
+                    .param("log_file_path", entity.logFilePath())
                     .update();
+
         });
     }
     /**
@@ -76,39 +82,44 @@ public non-sealed class LogsMetadataRepository implements CrudRepository<LogsMet
      * @return an {@link Optional} containing the found entity, or empty if not found
      */
     @Override
-    public Optional<LogsMetadata> findById(String uuid) {
+    public Optional<LogsDataSource> findById(String uuid) {
         var selectSql = """
-                SELECT * FROM logs_metadata
+                SELECT * FROM logs_data_source
                 WHERE uuid = :uuid
                 ;
                 """;
         return jdbcClient.sql(selectSql)
-                .param("uuid",uuid)
-                .query((resultSet, row) -> new LogsMetadata(
+                .param("uuid", uuid)
+                .query((resultSet, row) -> new LogsDataSource(
                         resultSet.getString("uuid"),
-                        resultSet.getString("log_uuid"),
-                        resultSet.getString("metadata_type"),
-                        resultSet.getString("metadata_value")
+                        resultSet.getString("name"),
+                        resultSet.getString("source_type"),
+                        resultSet.getString("application_id"),
+                        DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime(resultSet.getString("created_at")),
+                        resultSet.getString("log_file_path")
                 ))
                 .optional();
     }
+
     /**
      * Retrieves all entities of type {@code T} from the database.
      *
      * @return a list of all entities; never {@code null}, but may be empty
      */
     @Override
-    public List<LogsMetadata> findAll() {
+    public List<LogsDataSource> findAll() {
         var selectSql = """
-                SELECT * FROM logs_metadata
+                SELECT * FROM logs_data_source
                 ;
                 """;
         return jdbcClient.sql(selectSql)
-                .query((resultSet, row) -> new LogsMetadata(
+                .query((resultSet, row) -> new LogsDataSource(
                         resultSet.getString("uuid"),
-                        resultSet.getString("log_uuid"),
-                        resultSet.getString("metadata_type"),
-                        resultSet.getString("metadata_value")
+                        resultSet.getString("name"),
+                        resultSet.getString("source_type"),
+                        resultSet.getString("application_id"),
+                        DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime(resultSet.getString("created_at")),
+                        resultSet.getString("log_file_path")
                 ))
                 .list();
     }
@@ -121,12 +132,12 @@ public non-sealed class LogsMetadataRepository implements CrudRepository<LogsMet
     @Override
     public void deleteById(String uuid) {
         var deleteSql = """
-                DELETE FROM logs_metadata
+                DELETE FROM logs_data_source
                 WHERE
                 uuid = :uuid
                 """;
         jdbcClient.sql(deleteSql)
-                .param("uuid",uuid)
+                .param("uuid", uuid)
                 .update();
     }
     /**
@@ -136,7 +147,7 @@ public non-sealed class LogsMetadataRepository implements CrudRepository<LogsMet
     @Override
     public void deleteAll() {
         var deleteSql = """
-                DELETE FROM logs_metadata;
+                DELETE FROM logs_data_source;
                 """;
         jdbcClient.sql(deleteSql)
                 .update();
@@ -150,13 +161,13 @@ public non-sealed class LogsMetadataRepository implements CrudRepository<LogsMet
     @Override
     public boolean existsById(String uuid) {
         var countSql = """
-                SELECT COUNT(*) FROM logs_metadata
+                SELECT COUNT(*) FROM logs_data_source
                 WHERE
                 uuid = :uuid
                 """;
         var count = jdbcClient.sql(countSql)
-                .param("uuid",uuid)
-                .query((resultSet,row) -> resultSet.getLong(1))
+                .param("uuid", uuid)
+                .query((resultSet, row) -> resultSet.getLong(1))
                 .single();
         return count > 0;
     }
@@ -170,35 +181,43 @@ public non-sealed class LogsMetadataRepository implements CrudRepository<LogsMet
      * @throws NoSuchElementException   if no entity with the given {@code uuid} exists in the data source
      */
     @Override
-    public void updateById(String uuid, LogsMetadata entity) throws NoSuchElementException {
+    public void updateById(String uuid, LogsDataSource entity) throws NoSuchElementException {
         var updateSql = """
-                UPDATE logs_metadata
-                SET log_uuid = :log_uuid,
-                    metadata_type = :metadata_type,
-                    metadata_value = :metadata_value
-                WHERE uuid = :uuid;
-                ;
+                    UPDATE logs_data_source
+                    SET
+                        name = :name,
+                        source_type = :source_type,
+                        application_id = :application_id,
+                        created_at = :created_at,
+                        log_file_path = :log_file_path
+                    WHERE
+                        uuid = :uuid
                 """;
         jdbcClient.sql(updateSql)
-                .param("log_uuid", entity.logId())
-                .param("metadata_type", entity.metadataType())
-                .param("metadata_value", entity.metadataValue())
-                .param("uuid",uuid)
+                .param("name", entity.name())
+                .param("source_type", entity.sourceType())
+                .param("application_id", entity.applicationId())
+                .param("created_at", DateTimeUtils.localDateTimeToUTCTime(entity.createdAt()))
+                .param("log_file_path", entity.logFilePath())
+                .param("uuid", uuid)
                 .update();
+
     }
-    public List<LogsMetadata> findByRootLogId(String parentLogId) {
+    public List<LogsDataSource> findByApplicationId(String parentAppId) {
         var selectSql = """
-                SELECT * FROM logs_metadata
-                WHERE log_uuid = :log_uuid
+                SELECT * FROM logs_data_source
+                WHERE application_id = :application_id
                 ;
                 """;
         return jdbcClient.sql(selectSql)
-                .param("log_uuid",parentLogId)
-                .query((resultSet, row) -> new LogsMetadata(
+                .param("application_id", parentAppId)
+                .query((resultSet, row) -> new LogsDataSource(
                         resultSet.getString("uuid"),
-                        resultSet.getString("log_uuid"),
-                        resultSet.getString("metadata_type"),
-                        resultSet.getString("metadata_value")
+                        resultSet.getString("name"),
+                        resultSet.getString("source_type"),
+                        resultSet.getString("application_id"),
+                        DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime(resultSet.getString("created_at")),
+                        resultSet.getString("log_file_path")
                 ))
                 .list();
     }

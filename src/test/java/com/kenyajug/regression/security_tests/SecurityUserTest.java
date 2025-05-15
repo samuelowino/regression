@@ -1,4 +1,4 @@
-package com.kenyajug.regression.entities;
+package com.kenyajug.regression.security_tests;
 /*
  * MIT License
  *
@@ -22,13 +22,26 @@ package com.kenyajug.regression.entities;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import java.time.LocalDateTime;
-public record AppLog(
-        String uuid,
-        LocalDateTime timestamp,
-        String severity,
-        String applicationId,
-        String logSource,
-        String message
-) {
+import com.kenyajug.regression.security.SecurityUser;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.util.Collection;
+import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
+@ExtendWith(MockitoExtension.class)
+public class SecurityUserTest {
+    @Test
+    public void shouldInitializeSecurityUserTest(){
+        Collection<SimpleGrantedAuthority> authorities = List.of(
+                new SimpleGrantedAuthority("ROLE_USER"),
+                new SimpleGrantedAuthority("ROLE_ADMIN")
+        );
+        var user = new SecurityUser("vladimir@ru.com","$2a$10$D1r0ghp70r...aC7pS3Ozi3IM", authorities);
+        assertThat(user).isNotNull();
+        assertThat(user.authorities()).isNotEmpty();
+        assertThat(user.authorities().size()).isEqualTo(2);
+        assertThat(user.getAuthorities().size()).isEqualTo(2);
+    }
 }

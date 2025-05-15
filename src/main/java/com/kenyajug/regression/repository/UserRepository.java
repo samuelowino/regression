@@ -181,4 +181,32 @@ public non-sealed class UserRepository implements CrudRepository<User> {
                 .param("uuid",uuid)
                 .update();
     }
+    public Optional<User> findByUsername(String username){
+        var selectSql = """
+                SELECT * FROM users
+                WHERE username = :username
+                ;
+                """;
+        return jdbcClient.sql(selectSql)
+                .param("username",username)
+                .query((resultSet, row) -> new User(
+                        resultSet.getString("uuid"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        resultSet.getString("roles_list_json"),
+                        DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime(resultSet.getString("created_at"))
+                ))
+                .optional();
+    }
+    public boolean existsByUsername(String username){
+        var selectSql = """
+                SELECT COUNT(*) FROM users
+                WHERE username = :username
+                ;
+                """;
+        return jdbcClient.sql(selectSql)
+                .param("username",username)
+                .query((resultSet, row) -> resultSet.getLong(1))
+                .single() > 0;
+    }
 }

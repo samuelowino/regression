@@ -1,7 +1,4 @@
 package com.kenyajug.regression.entities;
-
-import java.time.LocalDateTime;
-
 /*
  * MIT License
  *
@@ -25,6 +22,7 @@ import java.time.LocalDateTime;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import java.time.LocalDateTime;
 public record User(
         String uuid,
         String username,

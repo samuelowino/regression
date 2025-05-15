@@ -1,4 +1,4 @@
-package com.kenyajug.regression.entities;
+package com.kenyajug.regression.security;
 /*
  * MIT License
  *
@@ -22,13 +22,24 @@ package com.kenyajug.regression.entities;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import java.time.LocalDateTime;
-public record AppLog(
-        String uuid,
-        LocalDateTime timestamp,
-        String severity,
-        String applicationId,
-        String logSource,
-        String message
-) {
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Collection;
+public record SecurityUser(
+        String username,
+        String password,
+        Collection<? extends GrantedAuthority> authorities
+) implements UserDetails {
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+    @Override
+    public String getPassword() {
+        return password;
+    }
+    @Override
+    public String getUsername() {
+        return username;
+    }
 }

@@ -1,4 +1,4 @@
-package com.kenyajug.regression.entities;
+package com.kenyajug.regression.controllers;
 /*
  * MIT License
  *
@@ -22,13 +22,13 @@ package com.kenyajug.regression.entities;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import java.time.LocalDateTime;
-public record AppLog(
-        String uuid,
-        LocalDateTime timestamp,
-        String severity,
-        String applicationId,
-        String logSource,
-        String message
-) {
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+@Controller
+public class DashboardController {
+    @GetMapping("/")
+    public String dashboard(Model model){
+        return "dashboard";
+    }
 }
