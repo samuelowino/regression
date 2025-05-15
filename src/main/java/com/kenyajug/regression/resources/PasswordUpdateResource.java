@@ -22,8 +22,17 @@ package com.kenyajug.regression.resources;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 public record PasswordUpdateResource(
+        @NotEmpty
+        @NotBlank
         String currentPassword,
+        @NotEmpty
+        @NotBlank
         String newPassword,
-        String confirmPassword) {
+        @NotEmpty
+        @NotBlank
+        String confirmPassword
+) {
 }

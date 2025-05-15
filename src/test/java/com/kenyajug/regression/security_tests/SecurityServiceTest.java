@@ -26,6 +26,7 @@ import com.kenyajug.regression.entities.User;
 import com.kenyajug.regression.repository.UserRepository;
 import com.kenyajug.regression.security.SecurityService;
 import com.kenyajug.regression.utils.DateTimeUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,6 +44,7 @@ public class SecurityServiceTest {
     @InjectMocks
     private SecurityService securityService;
     @Test
+    @DisplayName("Should load SecurityUser by username")
     public void shouldLoadSecurityUserByUsernameTest(){
         var userEntity = new User(
                 "UUID1",
@@ -59,6 +61,7 @@ public class SecurityServiceTest {
         assertThat(userDetails.getPassword()).isEqualTo(userEntity.password());
     }
     @Test
+    @DisplayName("Should throw SecurityException when security conditions are violated")
     public void shouldThrowSecurityExceptionTest(){
         when(userRepository.findByUsername(anyString()))
                 .thenReturn(Optional.empty());

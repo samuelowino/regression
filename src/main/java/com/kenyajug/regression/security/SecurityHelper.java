@@ -1,4 +1,4 @@
-package com.kenyajug.regression.entities;
+package com.kenyajug.regression.security;
 /*
  * MIT License
  *
@@ -21,25 +21,22 @@ package com.kenyajug.regression.entities;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import java.time.LocalDateTime;
-public record LogsDataSource(
-        @Pattern(
-                regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$",
-                message = "Invalid log id format"
-        )
-        String uuid,
-        @NotBlank(message = "Data source name cannot be left blank")
-        String name,
-        @NotBlank(message = "Data source type cannot be empty")
-        String sourceType,//Can be local,API,Form
-        @NotBlank(message = "Missing appliation id error")
-        String applicationId,
-        @NotNull(message = "Failed to determine log data source timestamps, internal error 😕")
-        LocalDateTime createdAt,
-        String logFilePath
-) {
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+@Component
+public class SecurityHelper {
+    public SecurityUser findAuthenticatedUser(){
+        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof SecurityUser userDetails) {
+            return userDetails;
+        } else {
+            forceLogout();
+            throw new SecurityException("Could not determine authenticated user");
+        }
+    }
+    public void forceLogout() {
+        SecurityContextHolder.clearContext();
+    }
 }

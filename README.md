@@ -1,4 +1,6 @@
 # Regression
+[![Build Status](https://github.com/kenya-jug/regression/actions/workflows/maven.yml/badge.svg)](https://github.com/kenya-jug/regression/actions/workflows/maven.yml)
+
 A Spring Boot server for collecting, storing, and analyzing error logs with REST APIs and AI-powered log analysis
 
 ### **Regression – Requirements Specification**
@@ -231,6 +233,21 @@ N/A - Documentation changes only
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- coverage start -->
 ## 📊 Code Coverage Report
 
@@ -238,10 +255,10 @@ N/A - Documentation changes only
 
 | Metric      | Covered | Missed | Total | Coverage  |
 |-------------|---------|--------|-------|-----------|
-| INSTRUCTION | 1562    | 0      | 1562  | 100.00% ✅ |
-| LINE        | 442     | 0      | 442   | 100.00% ✅ |
-| BRANCH      | 16      | 0      | 16    | 100.00% ✅ |
-| METHOD      | 113     | 0      | 113   | 100.00% ✅ |
-| CLASS       | 20      | 0      | 20    | 100.00% ✅ |
-| COMPLEXITY  | 121     | 0      | 121   | 100.00% ✅ |
+| INSTRUCTION | 1847    | 0      | 1847  | 100.00% ✅ |
+| LINE        | 512     | 0      | 512   | 100.00% ✅ |
+| BRANCH      | 24      | 0      | 24    | 100.00% ✅ |
+| METHOD      | 129     | 0      | 129   | 100.00% ✅ |
+| CLASS       | 24      | 0      | 24    | 100.00% ✅ |
+| COMPLEXITY  | 141     | 0      | 141   | 100.00% ✅ |
 <!-- coverage end -->

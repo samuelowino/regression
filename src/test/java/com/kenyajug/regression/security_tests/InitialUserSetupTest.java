@@ -26,6 +26,7 @@ import com.kenyajug.regression.InitialUserSetup;
 import com.kenyajug.regression.entities.User;
 import com.kenyajug.regression.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.boot.CommandLineRunner;
@@ -42,6 +43,7 @@ public class InitialUserSetupTest {
         passwordEncoder = mock(PasswordEncoder.class);
         initialUserSetup = new InitialUserSetup();
     }
+    @DisplayName("Should create a user if one does not already exist")
     @Test
     void shouldCreateUserIfNotExists() throws Exception {
         var username = "admin@regression.com";
@@ -56,6 +58,7 @@ public class InitialUserSetupTest {
         assertThat(savedUser.password()).isEqualTo("hashedPassword");
         assertThat(savedUser.roles_list_json()).contains("{ROLE_ADMIN","ROLE_USER}");
     }
+    @DisplayName("Should not create a user if one already exists")
     @Test
     void shouldNotCreateUserIfAlreadyExists() throws Exception {
         when(userRepository.existsByUsername("admin@regression.com")).thenReturn(true);

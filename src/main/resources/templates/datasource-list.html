@@ -27,7 +27,7 @@
     <meta charset="UTF-8">
     <title>Regression Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="../static/css/dashboard.css" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="../static/css/application.css" th:href="@{/css/application.css}">
 </head>
 <body>
 <div class="sidebar">
@@ -41,33 +41,15 @@
     </div>
 </div>
 <div class="main-content">
-    <h2>Welcome to the Regression Dashboard</h2>
-    <div class="card">
-        <h3>📈 Incoming Logs Today</h3>
-        <canvas id="todayLogsChart"></canvas>
-    </div>
-    <div class="card">
-        <h3><span>🧩 Connected Apps and Platforms</span> <span><a href="/add/datasource" th:href="@{/add/application}">Create New Application</a></span></h3>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Environment</th>
-                <th>Status</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="app : ${apps}">
-                <td th:text="${app.name}">App Name</td>
-                <td th:text="${app.runtimeEnvironment}">API</td>
-                <td>Connected 🛜</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <h2>📁 Data Sources</h2>
 
     <div class="card">
-        <h3><span>📁 Data Sources</span> <span><a href="/add/data/source" th:href="@{/add/data/source}">Create New Datasource</a></span></h3>
+        <h3>📈 Logs by Source</h3>
+        <div class="chart-container">
+            <canvas id="connectedAppLogsChart"></canvas>
+        </div>
+    </div>
+    <div class="card">
         <table>
             <thead>
             <tr>
@@ -87,27 +69,10 @@
             </tbody>
         </table>
     </div>
-
-    <div class="card">
-        <h3><span>🕒 Recent Processed Logs</span> <span><a href="/add/logs" th:href="@{/add/logs}">Submit Logs</a></span></h3>
-        <table>
-            <thead>
-            <tr>
-                <th>Timestamp</th>
-                <th>Source</th>
-                <th>Status</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="log : ${logs}">
-                <td th:text="${log.timestamp}">2025-05-14 10:00</td>
-                <td th:text="${log.sourceName}">Data Source 1</td>
-                <td th:text="${log.status}">Success</td>
-            </tr>
-            </tbody>
-        </table>
+    <div>
+        <h3><span><a href="/add/datasource" th:href="@{/add/application}">Create New Application</a></span></h3>
     </div>
 </div>
-<script src ="../static/js/charts.js" th:src="@{/js/charts.js}"></script>
+<script src ="../static/js/applications-list.js" th:src="@{/js/applications-list.js}"></script>
 </body>
 </html>

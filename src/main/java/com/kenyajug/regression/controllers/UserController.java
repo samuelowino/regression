@@ -25,9 +25,11 @@ package com.kenyajug.regression.controllers;
 import com.kenyajug.regression.entities.User;
 import com.kenyajug.regression.repository.UserRepository;
 import com.kenyajug.regression.resources.PasswordUpdateResource;
+import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,9 +49,16 @@ public class UserController {
         return "user-form";
     }
     @PostMapping("/admin/update")
-    public String updateAdminPassword(@ModelAttribute PasswordUpdateResource passwordUpdateResource){
-        if (!passwordUpdateResource.confirmPassword().equals(passwordUpdateResource.newPassword()))
-            throw new RuntimeException("Invalid input, failed to update admin password");
+    public String updateAdminPassword(Model model, @ModelAttribute("password") @Valid PasswordUpdateResource passwordUpdateResource, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("password", passwordUpdateResource);
+            return "user-form";
+        }
+        if (!passwordUpdateResource.confirmPassword().equals(passwordUpdateResource.newPassword())) {
+            bindingResult.rejectValue("confirmPassword","Passwords do not match","The new passwords you entered don’t match");
+            model.addAttribute("password",passwordUpdateResource);
+            return "user-form";
+        }
         var admin = userRepository.findByUsername("admin@regression.com").orElseThrow(() -> new SecurityException("Security Error! Missing admin account"));
         var user = new User(
                 admin.uuid(),

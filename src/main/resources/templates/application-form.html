@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--
+  MIT License
+
+  Copyright (c) 2025 Kenya JUG
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+<head>
+    <title>Application Form - Regression</title>
+    <link rel="stylesheet" href="../static/css/application.css" th:href="@{/css/application.css}">
+</head>
+<body>
+<h2 style="text-align: center;">Register Application</h2>
+<form th:action="@{/add/application}" th:object="${application}" method="post">
+    <input type="hidden" th:field="*{uuid}" />
+    <label for="name">Application Name</label>
+    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;"></p>
+    <input type="text" id="name" th:field="*{name}" required />
+    <label for="runtimeEnvironment">Runtime Environment</label>
+    <input list="runtimeOptions" id="runtimeEnvironment" th:field="*{runtimeEnvironment}" required />
+    <p th:if="${#fields.hasErrors('runtimeEnvironment')}" th:errors="*{runtimeEnvironment}" style="color: red;"></p>
+    <datalist id="runtimeOptions">
+        <!-- Desktop / Server OS -->
+        <option value="Windows" />
+        <option value="Linux" />
+        <option value="macOS" />
+        <option value="Unix" />
+        <option value="FreeBSD" />
+        <option value="Solaris" />
+        <option value="AIX" />
+        <option value="HP-UX" />
+
+        <!-- Virtualization / Containerization -->
+        <option value="Docker" />
+        <option value="Kubernetes" />
+        <option value="LXC" />
+        <option value="Podman" />
+        <option value="VMware ESXi" />
+        <option value="VirtualBox" />
+
+        <!-- Cloud / Serverless -->
+        <option value="AWS Lambda" />
+        <option value="Google Cloud Run" />
+        <option value="Azure Functions" />
+        <option value="Heroku" />
+        <option value="Cloud Foundry" />
+
+        <!-- Runtime Environments -->
+        <option value="Node.js" />
+        <option value="JVM" />
+        <option value=".NET Core" />
+        <option value="Python" />
+        <option value="Ruby" />
+        <option value="PHP" />
+        <option value="Go" />
+
+        <!-- Mobile Platforms -->
+        <option value="Android" />
+        <option value="iOS" />
+        <option value="HarmonyOS" />
+        <option value="KaiOS" />
+    </datalist>
+    <input type="submit" value="Save Application" />
+</form>
+</body>
+
