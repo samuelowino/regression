@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 public final class DateTimeUtils {
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -146,5 +147,16 @@ public final class DateTimeUtils {
     public static String localDateTimeToUTCTime(LocalDateTime localDateTime) {
         var zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("UTC"));
         return convertUTCZonedDateTimeToString(zonedDateTime);
+    }
+    public static LocalDateTime fromTomcatLogTimestamp(String timestamp){
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm:ss.SSS");
+            var temporal = formatter.parse(timestamp);
+            return LocalDateTime.from(temporal);
+        } catch (DateTimeParseException formatException){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+            var temporal = formatter.parse(timestamp);
+            return LocalDateTime.from(temporal);
+        }
     }
 }

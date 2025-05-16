@@ -283,4 +283,39 @@ public class LogsDataSourceRepositoryTest {
         assertThat(match.createdAt().isEqual(entity1.createdAt())).isTrue();
         assertThat(match.logFilePath()).isEqualTo(entity1.logFilePath());
     }
+    @Test
+    public void shouldFindBySourceTypeTest(){
+        var entity1 = new LogsDataSource(
+                "UUID1",
+                "Apache Tomcat 10 (Linux Ubuntu 20.04.01)",
+                "API",
+                "App_UUID1",
+                LocalDateTime.of(2000,11,5,21,15,0),
+                ""
+        );
+        var entity2 = new LogsDataSource(
+                "UUID2",
+                "Apache Tomcat 10 (Linux Ubuntu 20.04.01)",
+                "local",
+                "App_UUID2",
+                LocalDateTime.of(2000,11,5,21,15,0),
+                "/var/log/mysql/error.log"
+        );
+        repository.save(entity1);
+        repository.save(entity2);
+        var entities = repository.findAll();
+        assertThat(entities).isNotEmpty();
+        var matching = repository.findBySourceType("local");
+        assertThat(matching).isNotEmpty();
+        assertThat(matching.size()).isEqualTo(1);
+        var match = matching.getFirst();
+        assertThat(match).isNotNull();
+        assertThat(match.uuid()).isEqualTo(entity2.uuid());
+        assertThat(match.uuid()).isEqualTo(entity2.uuid());
+        assertThat(match.name()).isEqualTo(entity2.name());
+        assertThat(match.sourceType()).isEqualTo(entity2.sourceType());
+        assertThat(match.applicationId()).isEqualTo(entity2.applicationId());
+        assertThat(match.createdAt().isEqual(entity2.createdAt())).isTrue();
+        assertThat(match.logFilePath()).isEqualTo(entity2.logFilePath());
+    }
 }

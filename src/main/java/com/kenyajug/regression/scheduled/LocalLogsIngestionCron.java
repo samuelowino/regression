@@ -1,4 +1,4 @@
-package com.kenyajug.regression;
+package com.kenyajug.regression.scheduled;
 /*
  * MIT License
  *
@@ -22,14 +22,20 @@ package com.kenyajug.regression;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
-@EnableScheduling
-@SpringBootApplication
-public class RegressionApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(RegressionApplication.class, args);
-	}
-
+import com.kenyajug.regression.services.IngestionService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import java.io.IOException;
+@Component
+@Slf4j
+public class LocalLogsIngestionCron {
+    private final IngestionService ingestionService;
+    public LocalLogsIngestionCron(IngestionService ingestionService) {
+        this.ingestionService = ingestionService;
+    }
+    @Scheduled(fixedDelay = 5 * 1000)
+    public void runIngestionJob() throws IOException {
+        ingestionService.processLocalLogs();
+    }
 }

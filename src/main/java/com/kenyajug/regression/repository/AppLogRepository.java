@@ -27,6 +27,7 @@ import com.kenyajug.regression.utils.DateTimeUtils;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.support.TransactionTemplate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -199,5 +200,33 @@ public non-sealed class AppLogRepository implements CrudRepository<AppLog>{
                 .param("message",entity.message())
                 .param("uuid",uuid)
                 .update();
+    }
+    /**
+     * Checks whether a {@link com.kenyajug.regression.entities.LogsDataSource} entry exists for the given timestamp, application ID, and data source.
+     * <p>
+     * This method is typically used to prevent duplicate log ingestion or processing by verifying
+     * the existence of a record that matches the specified parameters.
+     * </p>
+     *
+     * @param timestamp     the timestamp associated with the log entry.
+     * @param applicationId the unique identifier of the application that generated the log.
+     * @param datasource    the identifier or name of the data source (e.g., "local", "remote").
+     * @return {@code true} if a matching log entry exists; {@code false} otherwise.
+     */
+    public boolean existsByTimestampApplicationAndSource(LocalDateTime timestamp, String applicationId, String datasource) {
+        var countSql = """
+                SELECT COUNT(*) FROM app_logs
+                WHERE
+                timestamp = :timestamp AND
+                application_uuid = :application_uuid AND
+                log_source = :log_source
+                """;
+        var count = jdbcClient.sql(countSql)
+                .param("timestamp",DateTimeUtils.localDateTimeToUTCTime(timestamp))
+                .param("application_uuid",applicationId)
+                .param("log_source",datasource)
+                .query((resultSet,row) -> resultSet.getLong(1))
+                .single();
+        return count > 0;
     }
 }

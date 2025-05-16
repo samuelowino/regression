@@ -25,10 +25,9 @@
 -->
 <head>
     <title>Application Form - Regression</title>
-    <link rel="stylesheet" href="../static/css/application.css" th:href="@{/css/application.css}">
+    <link rel="stylesheet" href="../static/css/application-form.css" th:href="@{/css/application-form.css}">
 </head>
 <body>
-<h2 style="text-align: center;">Register Application</h2>
 <form th:action="@{/add/application}" th:object="${application}" method="post">
     <input type="hidden" th:field="*{uuid}" />
     <label for="name">Application Name</label>

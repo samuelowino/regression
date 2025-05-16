@@ -221,4 +221,32 @@ public non-sealed class LogsDataSourceRepository implements CrudRepository<LogsD
                 ))
                 .list();
     }
+    /**
+     * Retrieves a list of {@link LogsDataSource} entries that match the specified source type.
+     * <p>
+     * This method queries the underlying data store (e.g., database or in-memory collection) for
+     * all log data sources whose type corresponds to the provided source type string.
+     * </p>
+     *
+     * @param sourceType the type of log source to filter by (e.g., "local", "remote", "cloud").
+     * @return a list of matching {@link LogsDataSource} objects; an empty list if no matches are found.
+     */
+    public List<LogsDataSource> findBySourceType(String sourceType) {
+        var selectSql = """
+                SELECT * FROM logs_data_source
+                WHERE source_type = :source_type
+                ;
+                """;
+        return jdbcClient.sql(selectSql)
+                .param("source_type", sourceType)
+                .query((resultSet, row) -> new LogsDataSource(
+                        resultSet.getString("uuid"),
+                        resultSet.getString("name"),
+                        resultSet.getString("source_type"),
+                        resultSet.getString("application_id"),
+                        DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime(resultSet.getString("created_at")),
+                        resultSet.getString("log_file_path")
+                ))
+                .list();
+    }
 }
