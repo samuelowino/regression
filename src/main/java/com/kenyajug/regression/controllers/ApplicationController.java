@@ -21,34 +21,61 @@ package com.kenyajug.regression.controllers;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
+import com.kenyajug.regression.entities.Application;
 import com.kenyajug.regression.repository.ApplicationsRepository;
-import com.kenyajug.regression.repository.LogsDataSourceRepository;
 import com.kenyajug.regression.repository.UserRepository;
+import com.kenyajug.regression.resources.ApplicationResource;
 import com.kenyajug.regression.security.SecurityHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import jakarta.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.UUID;
 @Controller
-public class DashboardController {
+public class ApplicationController {
+    private final ApplicationsRepository applicationsRepository;
     private final UserRepository userRepository;
     private final SecurityHelper securityHelper;
-    private final ApplicationsRepository applicationsRepository;
-    private final LogsDataSourceRepository logsDataSourceRepository;
-    public DashboardController(UserRepository userRepository, SecurityHelper securityHelper, ApplicationsRepository applicationsRepository, LogsDataSourceRepository logsDataSourceRepository) {
+    public ApplicationController(ApplicationsRepository applicationsRepository, UserRepository userRepository, SecurityHelper securityHelper) {
+        this.applicationsRepository = applicationsRepository;
         this.userRepository = userRepository;
         this.securityHelper = securityHelper;
-        this.applicationsRepository = applicationsRepository;
-        this.logsDataSourceRepository = logsDataSourceRepository;
     }
-    @GetMapping("/")
-    public String dashboard(Model model){
+    @GetMapping("/add/application")
+    public String loadApplicationForm(Model model){
+        var emptyApplication = new ApplicationResource(UUID.randomUUID().toString(),"","");
+        model.addAttribute("application",emptyApplication);
+        return "application-form";
+    }
+    @PostMapping("/add/application")
+    public String saveNewApplication(@Valid @ModelAttribute("application") ApplicationResource applicationResource,
+                                     BindingResult bindingResult){
+        if (bindingResult.hasErrors())
+            return "application-form";
+        var principal = securityHelper.findAuthenticatedUser();
+        var user = userRepository.findByUsername(principal.getUsername()).orElseThrow(() -> new SecurityException("Invalid session, current user is not authenticated"));
+        var entity = new Application(
+                applicationResource.uuid(),
+                applicationResource.name(),
+                "1.0",
+                applicationResource.runtimeEnvironment(),
+                user.uuid(),
+                LocalDateTime.now());
+        applicationsRepository.save(entity);
+        return "redirect:/applications";
+    }
+    @GetMapping("/applications")
+    public String listApplications(Model model){
         var principal = securityHelper.findAuthenticatedUser();
         var user = userRepository.findByUsername(principal.getUsername()).orElseThrow(() -> new SecurityException("Invalid session, current user is not authenticated"));
         var apps = applicationsRepository.findByOwner(user);
-        var datasourceList = logsDataSourceRepository.findAll();
         model.addAttribute("apps",apps);
-        model.addAttribute("logsDatasourceList",datasourceList);
-        return "dashboard";
+        return "applications-list";
     }
 }

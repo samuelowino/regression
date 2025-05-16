@@ -23,7 +23,6 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 -->
-
 <head>
     <meta charset="UTF-8">
     <title>Update Password | Regression</title>
@@ -36,13 +35,13 @@
     <form th:action="@{/admin/update}" method="post" th:object="${password}">
         <label for="currentPassword">Current Password</label>
         <input type="password" th:field="*{currentPassword}" id="currentPassword" required />
-
+        <div th:if="${#fields.hasErrors('currentPassword')}" th:errors="*{currentPassword}" style="color: red;"></div>
         <label for="newPassword">New Password</label>
         <input type="password" th:field="*{newPassword}" id="newPassword" required minlength="8" />
-
+        <div th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}" style="color: red;"></div>
         <label for="confirmPassword">Confirm New Password</label>
         <input type="password" th:field="*{confirmPassword}" id="confirmPassword" required />
-
+        <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" style="color: red;"></div>
         <div class="error" th:if="${#fields.hasErrors('*')}">
             <p th:errors="*{currentPassword}"></p>
             <p th:errors="*{newPassword}"></p>
@@ -51,7 +50,6 @@
 
         <input type="submit" value="Update Password" />
     </form>
-
     <div class="brand">Built with ❤️ by Kenya JUG FOSS Community</div>
 </div>
 </body>

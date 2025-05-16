@@ -106,10 +106,6 @@ th {
 tr:nth-child(even) {
     background-color: #181818;
 }
-
-canvas {
-    max-width: 100%;
-}
 a {
   color: #4ea8de;
   text-decoration: none;
@@ -124,4 +120,13 @@ a:focus {
 
 a:visited {
   color: #9f7aea;
+}
+.chart-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+canvas {
+    width: 100%;
+    height: auto;
 }

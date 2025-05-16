@@ -22,6 +22,7 @@ package com.kenyajug.regression.web_mvc_tests;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -38,6 +39,7 @@ public class ApplicationBasicSecurityTest {
     @Autowired
     private MockMvc mockMvc;
     @Test
+    @DisplayName("Should return 3xx redirect when credentials are missing")
     public void shouldThrow3xxWhenMissingCredentialsTest() throws Exception {
         mockMvc.perform(get("/"))
                 .andDo(print())

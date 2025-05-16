@@ -23,6 +23,7 @@ package com.kenyajug.regression.security_tests;
  * SOFTWARE.
  */
 import com.kenyajug.regression.security.SecurityUser;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -33,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 public class SecurityUserTest {
     @Test
+    @DisplayName("Should initialize SecurityUser correctly")
     public void shouldInitializeSecurityUserTest(){
         Collection<SimpleGrantedAuthority> authorities = List.of(
                 new SimpleGrantedAuthority("ROLE_USER"),

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--
+  MIT License
+
+  Copyright (c) 2025 Kenya JUG
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+<head>
+    <title>Register Logs Data Source</title>
+    <link rel="stylesheet" href="../static/css/datasource.css" th:href="@{/css/datasource.css}">
+</head>
+<body>
+<h2>Register Logs Data Source</h2>
+<form th:action="@{/add/data/source}" th:object="${datasource}" method="post">
+    <input type="hidden" th:field="*{uuid}" />
+    <input type="hidden" th:field="*{createdAt}" />
+    <label for="name">Name</label>
+    <input type="text" id="name" th:field="*{name}" required />
+    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;"></div>
+    <label for="sourceType">Source Type</label>
+    <select id="sourceType" th:field="*{sourceType}" required>
+        <option value="">-- Select --</option>
+        <option value="local">local</option>
+        <option value="API">API</option>
+        <option value="Form">Form</option>
+    </select>
+    <div th:if="${#fields.hasErrors('sourceType')}" th:errors="*{sourceType}" style="color: red;"></div>
+    <label for="applicationId">Application</label>
+    <select id="applicationId" th:field="*{applicationId}" required>
+        <option value="">-- Select an Application --</option>
+        <option th:each="app : ${applications}"
+                th:value="${app.uuid}"
+                th:text="${app.name}">
+        </option>
+    </select>
+    <p th:if="${#fields.hasErrors('applicationId')}" th:errors="*{applicationId}" class="error-message"></p>
+    <label for="logFilePath">Log File Path (Optional)</label>
+    <input type="text" id="logFilePath" th:field="*{logFilePath}" />
+    <input type="submit" value="Save" />
+</form>
+
+</body>
+</html>
