@@ -1,4 +1,4 @@
-package com.kenyajug.regression;
+package com.kenyajug.regression.models;
 /*
  * MIT License
  *
@@ -22,14 +22,6 @@ package com.kenyajug.regression;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
-@EnableScheduling
-@SpringBootApplication
-public class RegressionApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(RegressionApplication.class, args);
-	}
-
+import java.time.LocalDateTime;
+public record InstantTraceGroup(LocalDateTime timestamp, long length, String chunk) {
 }

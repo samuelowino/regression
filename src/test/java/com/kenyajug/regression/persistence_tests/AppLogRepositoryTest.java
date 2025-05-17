@@ -210,4 +210,26 @@ public class AppLogRepositoryTest {
         assertThat(persisted.logSource()).isEqualTo("Chrome LTS  version 132.0.6834.223Beta");
         assertThat(persisted.message()).isEqualTo("Object not found exception");
     }
+    @Test
+    public void shouldCheck_existsByTimestampApplicationAndSource_Test(){
+        var entity = new AppLog(
+                "UUID1",
+                DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime("2025-08-11 11:09:22 UTC"),
+                "WARN",
+                appId,
+                "data_source_uuid",
+                "Object not found exception"
+        );
+        repository.save(entity);
+        var exists = repository.existsById(entity.uuid());
+        assertThat(exists).isTrue();
+        exists = repository.existsByTimestampApplicationAndSource(entity.timestamp(),entity.applicationId(),entity.logSource());
+        assertThat(exists).isTrue();
+    }
+    @Test
+    public void shouldCheck_existsByTimestampApplicationAndSource_Case2_Test(){
+        var timestamp = DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime("2025-08-11 11:09:22 UTC");
+        var exists = repository.existsByTimestampApplicationAndSource(timestamp,appId,"data_source_uuid");
+        assertThat(exists).isFalse();
+    }
 }

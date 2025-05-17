@@ -29,6 +29,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @Slf4j
 public class DateTimeUtilsTest {
     @Test
@@ -114,5 +117,40 @@ public class DateTimeUtilsTest {
         var expected = "2023-05-08 14:30:15";
         var result = DateTimeUtils.convertLocalDateTimeToString(input);
         assertThat(expected).isEqualTo(result);
+    }
+    @Test
+    void parsesValidTomcatTimestamp() {
+        String timestamp = "15-May-2025 14:32:10.213";
+        LocalDateTime expected = LocalDateTime.of(2025, 5, 15, 14, 32, 10, 213_000_000);
+        LocalDateTime actual = DateTimeUtils.fromTomcatLogTimestamp(timestamp);
+        assertEquals(expected, actual);
+    }
+    @Test
+    void tomcatTimestampParsing_failsOnInvalidDateFormat() {
+        String invalidTimestamp = "2025-05-15 14:32:10.213";
+        assertThrows(Exception.class, () -> DateTimeUtils.fromTomcatLogTimestamp(invalidTimestamp));
+    }
+    @Test
+    void tomcatTimestampParsing_failsOnNullInput() {
+        assertThrows(NullPointerException.class, () -> DateTimeUtils.fromTomcatLogTimestamp(null));
+    }
+    @Test
+    void tomcatTimestampParsing_failsOnIncompleteTimestamp() {
+        String incomplete = "15-May-2025 14:32";
+        assertThrows(Exception.class, () -> DateTimeUtils.fromTomcatLogTimestamp(incomplete));
+    }
+    @Test
+    void tomcatTimestampParsing_parsesAnotherValidTimestamp() {
+        String timestamp = "01-Jan-2023 00:00:00.000";
+        LocalDateTime expected = LocalDateTime.of(2023, 1, 1, 0, 0, 0, 0);
+        LocalDateTime actual = DateTimeUtils.fromTomcatLogTimestamp(timestamp);
+        assertEquals(expected, actual);
+    }
+    @Test
+    void tomcatTimestampParsing_Case2_parsesAnotherValidTimestamp() {
+        String timestamp = "2025-05-16T09:31:14.088Z";
+        LocalDateTime expected = LocalDateTime.of(2025, 5, 16, 9, 31, 14, 88_000_000);
+        LocalDateTime actual = DateTimeUtils.fromTomcatLogTimestamp(timestamp);
+        assertEquals(expected, actual);
     }
 }
