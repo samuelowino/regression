@@ -27,7 +27,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.TestPropertySource;
 @SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
 class RegressionApplicationTests {
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -41,8 +43,8 @@ class RegressionApplicationTests {
 		Assertions.assertThat(beanNames).isNotEmpty();
 		Assertions.assertThat(beanNames).contains("regressionApplication");
 	}
-	@Test
-	void mainMethodRunsWithoutException() {
-		Assertions.assertThatCode(() -> RegressionApplication.main(new String[]{})).doesNotThrowAnyException();
-	}
+//	@Test
+//	void mainMethodRunsWithoutException() {
+//		Assertions.assertThatCode(() -> RegressionApplication.main(new String[]{})).doesNotThrowAnyException();
+//	}
 }

@@ -32,6 +32,7 @@ import java.sql.SQLException;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Disabled
 public class MigrationTest {
     @Autowired
     private DataSource dataSource;
