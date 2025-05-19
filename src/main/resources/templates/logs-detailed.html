@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--
+  MIT License
+
+  Copyright (c) 2025 Kenya JUG
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+<head>
+    <meta charset="UTF-8">
+    <title>Regression Dashboard</title>
+    <link rel="stylesheet" href="../static/css/log-detailed.css" th:href="@{/css/log-detailed.css}">
+</head>
+<body>
+<div class="sidebar">
+    <h1>Regression</h1>
+    <a class="nav-link" th:href="@{/}">🏠 Dashboard</a>
+    <a class="nav-link" th:href="@{/data/sources}">📁 Data Sources</a>
+    <a class="nav-link" th:href="@{/applications}">🧩 Apps & Platforms</a>
+    <a class="nav-link" th:href="@{/logs}">🪵 Processed Logs</a>
+    <a class="nav-link" th:href="@{/user/form}">🔒 Change Admin Password</a>
+    <div class="logout">
+        <a class="nav-link" th:href="@{/logout}">🚪 Logout</a>
+    </div>
+</div>
+<div class="main-content">
+    <h2>Log Details</h2>
+    <div class="card">
+        <table>
+            <tr>
+                <th>Application</th>
+                <td th:text="${log.application.name}">MyApp</td>
+            </tr>
+            <tr>
+                <th>Date & Time</th>
+                <td th:text="${log.timestamp}">2025-05-18 14:22:31</td>
+            </tr>
+            <tr>
+                <th>Severity</th>
+                <td th:text="${log.severity}">WARN</td>
+            </tr>
+            <tr>
+                <th>Source</th>
+                <td th:text="${log.source.name}">WARN</td>
+            </tr>
+            <tr>
+                <th>Metadata</th>
+                <td>
+                    <table class="metadata-table">
+                        <tbody>
+                        <tr th:each="entry : ${metadata}">
+                            <td th:text="${entry.metadataType}">Type</td>
+                            <td th:text="${entry.metadataValue}">Description</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="card">
+        <h3>TXT Raw Logs</h3>
+        <textarea readonly class="log-textarea" th:text="${log.message}">
+        Loading logs...
+    </textarea>
+    </div>
+    <div class="card">
+        <div class="log-actions">
+            <button class="action-button" onclick="searchGoogle()">🔍 Search Google</button>
+            <button class="action-button" onclick="askAI()">🤖 Ask AI</button>
+            <button class="action-button" onclick="askStackOverflow()">💬 Stack Overflow</button>
+            <button class="action-button" onclick="exportLogs()">📤 Export</button>
+            <a class="action-button" th:href="@{/logs/delete}">🗑️ Delete</a>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>Built with ❤️ by Kenya JUG FOSS</p>
+    </footer>
+</div>
+</body>
+<script>
+    function searchGoogle() {
+        const logs = document.querySelector('.log-textarea').value;
+        const query = encodeURIComponent(logs.slice(0, 200));
+        window.open(`https://www.google.com/search?q=${query}`, '_blank');
+    }
+
+    function askAI() {
+        window.open('https://chat.openai.com/', '_blank');
+    }
+
+    function askStackOverflow() {
+        const logs = document.querySelector('.log-textarea').value;
+        const query = encodeURIComponent(logs.slice(0, 200));
+        window.open(`https://stackoverflow.com/search?q=${query}`, '_blank');
+    }
+
+    function exportLogs() {
+        const logs = document.querySelector('.log-textarea').value;
+        const blob = new Blob([logs], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'logs.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+</script>
+</html>

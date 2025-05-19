@@ -1,0 +1,608 @@
+2025-05-16T15:32:01.123Z  INFO 12345 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2025-05-16T15:32:01.456Z  INFO 12345 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-16T15:32:01.456Z  INFO 12345 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.0]
+2025-05-16T15:32:01.789Z  INFO 12345 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2025-05-16T15:32:01.790Z  INFO 12345 --- [           main] c.example.MySpringBootApplication        : Started MySpringBootApplication in 3.210 seconds (JVM running for 3.456)
+2025-05-16T15:32:10.001Z  INFO 12345 --- [nio-8080-exec-1] c.e.controller.ItemController            : Received GET request for /api/v1/items?id=42
+2025-05-16T15:32:10.003Z DEBUG 12345 --- [nio-8080-exec-1] c.e.service.ItemService                  : Fetching item with ID 42 from database
+2025-05-16T15:32:10.010Z  INFO 12345 --- [nio-8080-exec-1] c.e.controller.ItemController            : Responding with item 42
+2025-05-16T15:32:10.011Z  INFO 12345 --- [nio-8080-exec-1] o.a.coyote.http11.Http11NioProtocol      : Processing timeTaken=8ms
+2025-05-16T15:32:10.012Z  INFO 12345 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-05-16T15:35:12.105Z  WARN 12345 --- [nio-8080-exec-2] c.e.service.ItemService                  : Slow database response detected for item ID 42 (timeTaken=512ms)
+2025-05-16T15:35:12.150Z ERROR 12345 --- [nio-8080-exec-2] c.e.controller.ItemController            : Failed to fetch item ID 42: java.lang.RuntimeException: Item not found
+
+java.lang.RuntimeException: Item not found
+	at com.example.service.ItemService.getItemById(ItemService.java:42)
+	at com.example.controller.ItemController.getItem(ItemController.java:28)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:197)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895)
+
+2025-05-16T15:35:12.155Z  WARN 12345 --- [nio-8080-exec-2] o.s.web.servlet.HandlerExceptionResolver : Resolved [java.lang.RuntimeException: Item not found]
+
+2025-05-16T15:35:12.157Z  INFO 12345 --- [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+
+2025-05-16T15:36:00.200Z ERROR 12345 --- [nio-8080-exec-3] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 1045, SQLState: 28000
+2025-05-16T15:36:00.200Z ERROR 12345 --- [nio-8080-exec-3] o.h.engine.jdbc.spi.SqlExceptionHelper   : Access denied for user 'appuser'@'localhost' (using password: YES)
+2025-05-16T15:40:00.100Z ERROR 12345 --- [nio-8080-exec-1] c.e.controller.UserController            : Null pointer encountered while fetching user details
+
+java.lang.NullPointerException: Cannot invoke "User.getName()" because "user" is null
+	at com.example.controller.UserController.getUser(UserController.java:45)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:377)
+	at com.example.service.UserService.getUserById(UserService.java:32)
+
+2025-05-16T15:40:10.210Z ERROR 12345 --- [nio-8080-exec-2] c.e.service.PaymentService               : Failed to parse payment request
+
+java.lang.NumberFormatException: For input string: "abc123"
+	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)
+	at java.base/java.lang.Integer.parseInt(Integer.java:668)
+	at com.example.service.PaymentService.processAmount(PaymentService.java:58)
+
+2025-05-16T15:40:15.310Z ERROR 12345 --- [nio-8080-exec-3] c.e.api.InventoryClient                  : External service error
+
+java.net.ConnectException: Connection refused (Connection refused)
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:940)
+
+2025-05-16T15:40:20.510Z ERROR 12345 --- [nio-8080-exec-4] c.e.service.FileStorageService           : File operation failed
+
+java.io.IOException: Disk quota exceeded
+	at java.base/java.io.FileOutputStream.writeBytes(Native Method)
+	at java.base/java.io.FileOutputStream.write(FileOutputStream.java:354)
+	at com.example.service.FileStorageService.saveFile(FileStorageService.java:75)
+
+2025-05-16T15:40:30.610Z ERROR 12345 --- [nio-8080-exec-5] c.e.config.SecurityConfig                : Unauthorized access attempt
+
+org.springframework.security.access.AccessDeniedException: Access is denied
+	at org.springframework.security.access.vote.AffirmativeBased.decide(AffirmativeBased.java:84)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:124)
+
+2025-05-16T15:40:35.710Z ERROR 12345 --- [nio-8080-exec-6] c.e.repository.UserRepository            : Data access failure
+
+org.springframework.dao.DataIntegrityViolationException: could not execute statement
+	at org.hibernate.exception.ConstraintViolationException: could not execute statement
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.logExceptions(SqlExceptionHelper.java:120)
+2025-05-18T15:32:01.123Z  INFO 12345 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2025-05-18T15:32:01.456Z  INFO 12345 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-18T15:32:01.456Z  INFO 12345 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.0]
+2025-05-18T15:32:01.789Z  INFO 12345 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2025-05-18T15:32:01.790Z  INFO 12345 --- [           main] c.example.MySpringBootApplication        : Started MySpringBootApplication in 3.210 seconds (JVM running for 3.456)
+2025-05-18T15:32:10.001Z  INFO 12345 --- [nio-8080-exec-1] c.e.controller.ItemController            : Received GET request for /api/v1/items?id=42
+2025-05-18T15:32:10.003Z DEBUG 12345 --- [nio-8080-exec-1] c.e.service.ItemService                  : Fetching item with ID 42 from database
+2025-05-18T15:32:10.010Z  INFO 12345 --- [nio-8080-exec-1] c.e.controller.ItemController            : Responding with item 42
+2025-05-18T15:32:10.011Z  INFO 12345 --- [nio-8080-exec-1] o.a.coyote.http11.Http11NioProtocol      : Processing timeTaken=8ms
+2025-05-18T15:32:10.012Z  INFO 12345 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-05-18T15:35:12.105Z  WARN 12345 --- [nio-8080-exec-2] c.e.service.ItemService                  : Slow database response detected for item ID 42 (timeTaken=512ms)
+2025-05-18T15:35:12.150Z ERROR 12345 --- [nio-8080-exec-2] c.e.controller.ItemController            : Failed to fetch item ID 42: java.lang.RuntimeException: Item not found
+
+java.lang.RuntimeException: Item not found
+	at com.example.service.ItemService.getItemById(ItemService.java:42)
+	at com.example.controller.ItemController.getItem(ItemController.java:28)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:197)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895)
+
+2025-05-18T15:35:12.155Z  WARN 12345 --- [nio-8080-exec-2] o.s.web.servlet.HandlerExceptionResolver : Resolved [java.lang.RuntimeException: Item not found]
+
+2025-05-18T15:35:12.157Z  INFO 12345 --- [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+
+2025-05-18T15:36:00.200Z ERROR 12345 --- [nio-8080-exec-3] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 1045, SQLState: 28000
+2025-05-18T15:36:00.200Z ERROR 12345 --- [nio-8080-exec-3] o.h.engine.jdbc.spi.SqlExceptionHelper   : Access denied for user 'appuser'@'localhost' (using password: YES)
+2025-05-18T15:40:00.100Z ERROR 12345 --- [nio-8080-exec-1] c.e.controller.UserController            : Null pointer encountered while fetching user details
+
+java.lang.NullPointerException: Cannot invoke "User.getName()" because "user" is null
+	at com.example.controller.UserController.getUser(UserController.java:45)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:377)
+	at com.example.service.UserService.getUserById(UserService.java:32)
+
+2025-05-18T15:40:10.210Z ERROR 12345 --- [nio-8080-exec-2] c.e.service.PaymentService               : Failed to parse payment request
+
+java.lang.NumberFormatException: For input string: "abc123"
+	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)
+	at java.base/java.lang.Integer.parseInt(Integer.java:668)
+	at com.example.service.PaymentService.processAmount(PaymentService.java:58)
+
+2025-05-18T15:40:15.310Z ERROR 12345 --- [nio-8080-exec-3] c.e.api.InventoryClient                  : External service error
+
+java.net.ConnectException: Connection refused (Connection refused)
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:940)
+
+2025-05-18T15:40:20.510Z ERROR 12345 --- [nio-8080-exec-4] c.e.service.FileStorageService           : File operation failed
+
+java.io.IOException: Disk quota exceeded
+	at java.base/java.io.FileOutputStream.writeBytes(Native Method)
+	at java.base/java.io.FileOutputStream.write(FileOutputStream.java:354)
+	at com.example.service.FileStorageService.saveFile(FileStorageService.java:75)
+
+2025-05-18T15:40:30.610Z ERROR 12345 --- [nio-8080-exec-5] c.e.config.SecurityConfig                : Unauthorized access attempt
+
+org.springframework.security.access.AccessDeniedException: Access is denied
+	at org.springframework.security.access.vote.AffirmativeBased.decide(AffirmativeBased.java:84)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:124)
+
+2025-05-18T15:40:35.710Z ERROR 12345 --- [nio-8080-exec-6] c.e.repository.UserRepository            : Data access failure
+
+org.springframework.dao.DataIntegrityViolationException: could not execute statement
+	at org.hibernate.exception.ConstraintViolationException: could not execute statement
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.logExceptions(SqlExceptionHelper.java:120)
+2025-05-18T00:01:00.001Z  INFO 12345 --- [           main] c.example.MySpringBootApplication        : Application bootstrap started
+2025-05-18T01:15:10.321Z  INFO 12345 --- [nio-8080-exec-1] c.e.controller.HomeController            : Accessed home page
+2025-05-18T02:45:05.125Z  WARN 12345 --- [nio-8080-exec-2] c.e.config.CacheConfig                   : Cache miss for user preferences
+2025-05-18T03:22:45.456Z ERROR 12345 --- [nio-8080-exec-3] c.e.repository.LogRepository             : Failed to retrieve logs from DB
+2025-05-18T04:55:30.999Z  INFO 12345 --- [nio-8080-exec-4] o.s.s.c.ThreadPoolTaskScheduler          : Scheduled task executed
+2025-05-18T05:10:20.888Z ERROR 12345 --- [nio-8080-exec-5] c.e.security.AuthService                 : Token signature invalid
+2025-05-18T06:35:40.300Z  INFO 12345 --- [nio-8080-exec-6] o.s.web.filter.CommonsRequestLogging     : Request URI=/health
+2025-05-18T07:47:50.222Z  INFO 12345 --- [nio-8080-exec-1] c.e.controller.PingController            : Ping received
+2025-05-18T08:12:15.612Z  INFO 12345 --- [nio-8080-exec-2] c.e.scheduler.ReportJob                  : Report generated successfully
+2025-05-18T09:58:00.987Z  INFO 12345 --- [nio-8080-exec-3] o.h.e.t.spi.AbstractTransactionImpl      : Transaction started
+2025-05-18T10:00:00.123Z  INFO 12345 --- [nio-8080-exec-4] c.e.service.UserService                  : Loaded user with ID 7
+2025-05-18T11:11:11.111Z  INFO 12345 --- [nio-8080-exec-5] o.s.b.a.l.ConditionEvaluationReportLogger: Condition evaluation report available
+2025-05-18T12:34:56.789Z  WARN 12345 --- [nio-8080-exec-6] c.e.service.InventoryService             : Item stock running low
+2025-05-18T13:22:33.444Z  INFO 12345 --- [nio-8080-exec-1] c.e.api.ExternalApiClient                : Received 200 OK from external system
+2025-05-18T14:17:29.005Z  INFO 12345 --- [nio-8080-exec-2] c.e.analytics.TrackerService             : Event tracked: user_login
+2025-05-18T15:02:03.001Z  INFO 12345 --- [nio-8080-exec-3] c.e.controller.ItemController            : Requested item list
+2025-05-18T16:45:00.333Z  WARN 12345 --- [nio-8080-exec-4] o.s.boot.actuate.endpoint.web.WebMvcEndpointHandlerMapping : Mapping warning
+2025-05-18T17:29:50.444Z ERROR 12345 --- [nio-8080-exec-5] o.h.engine.jdbc.spi.SqlExceptionHelper   : Deadlock found when trying to get lock
+2025-05-18T18:01:10.000Z  INFO 12345 --- [nio-8080-exec-6] c.e.controller.AdminController           : System health check passed
+2025-05-18T19:19:19.900Z ERROR 12345 --- [nio-8080-exec-1] c.e.service.FileStorageService           : Unable to write temp file
+2025-05-18T20:40:40.111Z  INFO 12345 --- [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Dispatch complete
+2025-05-18T21:55:05.888Z  WARN 12345 --- [nio-8080-exec-3] c.e.scheduler.CleanupJob                 : Cleanup skipped due to lock contention
+2025-05-18T22:22:22.222Z  INFO 12345 --- [nio-8080-exec-4] o.s.boot.autoconfigure.StartupReporter   : Startup check complete
+2025-05-18T23:59:59.999Z ERROR 12345 --- [nio-8080-exec-5] c.e.service.EmailService                 : Failed to send summary report email
+2025-05-18T15:00:01.101Z  INFO 12345 --- [nio-8080-exec-1] c.e.api.HealthController                 : Health check passed
+2025-05-18T15:03:12.301Z DEBUG 12345 --- [nio-8080-exec-2] c.e.repository.OrderRepository           : Executing query: findAllByUserId
+2025-05-18T15:05:43.902Z  INFO 12345 --- [nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-05-18T15:06:25.129Z  WARN 12345 --- [nio-8080-exec-4] c.e.service.CacheManager                 : Redis connection slow (latency > 100ms)
+2025-05-18T15:07:59.754Z ERROR 12345 --- [nio-8080-exec-5] c.e.service.MailService                  : SMTP authentication failed
+2025-05-18T15:08:11.350Z  INFO 12345 --- [nio-8080-exec-6] c.e.controller.UserController            : Logged in user ID 84
+2025-05-18T15:10:45.003Z  INFO 12345 --- [nio-8080-exec-1] c.e.service.PaymentService               : Payment processed for order #8421
+2025-05-18T15:11:15.789Z ERROR 12345 --- [nio-8080-exec-2] c.e.controller.OrderController           : Invalid order request received
+2025-05-18T15:13:33.223Z DEBUG 12345 --- [nio-8080-exec-3] c.e.api.WeatherClient                    : Fetching forecast from external API
+2025-05-18T15:15:00.000Z  INFO 12345 --- [nio-8080-exec-4] c.e.scheduler.MetricsCollector           : System metrics published
+2025-05-18T15:17:49.421Z  WARN 12345 --- [nio-8080-exec-5] c.e.config.SecurityConfig                : Suspicious login attempt detected
+2025-05-18T15:20:21.198Z  INFO 12345 --- [nio-8080-exec-6] o.h.engine.jdbc.connections.internal     : Connection pool initialized
+2025-05-18T15:23:10.412Z ERROR 12345 --- [nio-8080-exec-1] c.e.service.NotificationService          : FCM token expired
+2025-05-18T15:25:44.781Z  INFO 12345 --- [nio-8080-exec-2] c.e.controller.InventoryController       : Inventory checked for SKU 123-XYZ
+2025-05-18T15:28:36.340Z DEBUG 12345 --- [nio-8080-exec-3] c.e.service.AuditService                 : Audit record written
+2025-05-18T15:30:59.105Z ERROR 12345 --- [nio-8080-exec-4] c.e.repository.ProductRepository         : Duplicate SKU detected
+2025-05-18T15:33:27.606Z  WARN 12345 --- [nio-8080-exec-5] o.s.b.a.w.s.WelcomePageFilter            : Default index.html not found
+2025-05-18T15:36:13.909Z  INFO 12345 --- [nio-8080-exec-6] c.e.controller.SessionController         : Session timeout extended
+2025-05-18T15:39:03.999Z ERROR 12345 --- [nio-8080-exec-1] c.e.service.ImageService                 : Image decoding failed
+2025-05-18T15:42:18.407Z DEBUG 12345 --- [nio-8080-exec-2] c.e.config.FeatureFlags                  : Feature flag "BETA_UI" enabled
+2025-05-18T15:45:55.222Z  INFO 12345 --- [nio-8080-exec-3] c.e.controller.FileController            : File uploaded successfully
+2025-05-18T15:47:38.821Z  WARN 12345 --- [nio-8080-exec-4] o.h.engine.jdbc.spi.SqlExceptionHelper   : Query execution took too long (912ms)
+2025-05-18T15:50:05.330Z ERROR 12345 --- [nio-8080-exec-5] c.e.service.DocumentService              : PDF generation error: invalid template
+2025-05-18T15:53:29.717Z  INFO 12345 --- [nio-8080-exec-6] o.s.web.filter.CharacterEncodingFilter   : Encoding set to UTF-8
+2025-05-18T15:55:12.411Z DEBUG 12345 --- [nio-8080-exec-1] c.e.analytics.SessionTracker             : Active session ID: abc123xyz
+2025-05-18T15:58:48.605Z  INFO 12345 --- [nio-8080-exec-2] c.e.config.StartupConfig                 : ApplicationConfig initialized
+2025-05-18T12:00:01.014Z  INFO 8921 --- [nio-8080-exec-1] c.e.Application                          : Starting EcommerceApp v3.1.2
+2025-05-18T12:00:01.732Z  INFO 8921 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer : Tomcat started on port 8080
+2025-05-18T12:00:02.023Z  INFO 8921 --- [main] c.e.Application                          : Started in 2.745 seconds
+2025-05-18T12:01:44.611Z  INFO 8921 --- [nio-8080-exec-2] c.e.api.ProductController                : Product page requested for ID: 847
+2025-05-18T12:02:20.448Z  INFO 8921 --- [nio-8080-exec-3] c.e.service.InventoryService             : Inventory check: SKU-123 available (stock: 42)
+2025-05-18T12:03:05.332Z ERROR 8921 --- [nio-8080-exec-4] c.e.service.OrderService                 : Failed to place order
+
+java.lang.IllegalArgumentException: Quantity cannot be negative
+	at com.example.service.OrderService.validate(OrderService.java:88)
+	at com.example.service.OrderService.placeOrder(OrderService.java:62)
+	at com.example.api.OrderController.submitOrder(OrderController.java:44)
+...
+2025-05-18T12:03:32.101Z  INFO 8921 --- [nio-8080-exec-5] c.e.controller.LoginController           : Login successful for user: alice
+2025-05-18T12:04:10.771Z  WARN 8921 --- [nio-8080-exec-6] c.e.service.PaymentService               : Retry payment for transaction ID TXN-49182
+2025-05-18T12:04:50.231Z  INFO 8921 --- [nio-8080-exec-7] c.e.api.HealthController                 : Health check OK
+2025-05-18T12:05:25.444Z  INFO 8921 --- [nio-8080-exec-1] c.e.controller.DashboardController       : Loaded dashboard for userId=1123
+2025-05-18T12:06:07.812Z DEBUG 8921 --- [nio-8080-exec-2] c.e.repository.UserRepository            : Executing findByEmail('bob@example.com')
+2025-05-18T12:07:13.519Z  INFO 8921 --- [nio-8080-exec-3] c.e.service.EmailService                 : Confirmation email sent to charlie@example.com
+2025-05-18T12:08:45.602Z  INFO 8921 --- [nio-8080-exec-4] c.e.scheduler.DailyStatsJob              : Stats job started
+2025-05-18T12:08:47.889Z  INFO 8921 --- [nio-8080-exec-4] c.e.scheduler.DailyStatsJob              : Stats job completed in 2.1s
+2025-05-18T12:09:39.204Z  INFO 8921 --- [nio-8080-exec-5] c.e.controller.FeedbackController        : Feedback submitted by user 1156
+2025-05-18T12:10:13.020Z  INFO 8921 --- [nio-8080-exec-6] c.e.service.CartService                  : Cart cleared for session ID abc123
+2025-05-18T12:11:48.105Z ERROR 8921 --- [nio-8080-exec-7] c.e.service.ImageService                 : Error while processing image upload
+
+org.springframework.web.multipart.MultipartException: File size exceeds limit
+	at org.springframework.web.multipart.commons.CommonsMultipartResolver.parseRequest(CommonsMultipartResolver.java:145)
+	at com.example.service.ImageService.uploadImage(ImageService.java:58)
+...
+2025-05-18T12:12:15.311Z  INFO 8921 --- [nio-8080-exec-1] c.e.api.UserController                   : Profile updated for user 3192
+2025-05-18T12:12:40.443Z DEBUG 8921 --- [nio-8080-exec-2] c.e.security.JwtTokenProvider            : Valid JWT for user ID 302
+2025-05-18T12:13:57.102Z  INFO 8921 --- [nio-8080-exec-3] c.e.controller.AddressController         : Address added for user 453
+2025-05-18T12:14:28.490Z  WARN 8921 --- [nio-8080-exec-4] c.e.service.NotificationService          : FCM token expired, refresh triggered
+2025-05-18T12:15:03.781Z  INFO 8921 --- [nio-8080-exec-5] c.e.service.AuthService                  : Token refreshed for session abcxyz
+2025-05-18T12:16:12.678Z  INFO 8921 --- [nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-05-18T12:17:33.998Z ERROR 8921 --- [nio-8080-exec-7] c.e.service.DocumentService              : PDF generation failed
+
+java.io.IOException: Template file not found: invoice_template.html
+	at com.example.service.DocumentService.render(DocumentService.java:120)
+	at com.example.service.DocumentService.generateInvoice(DocumentService.java:65)
+...
+2025-05-18T12:18:11.221Z  INFO 8921 --- [nio-8080-exec-1] c.e.analytics.MetricsLogger              : Active sessions: 112
+2025-05-18T12:19:02.710Z  INFO 8921 --- [nio-8080-exec-2] c.e.service.FileStorageService           : File saved as 2025_report.csv
+2025-05-18T12:20:27.149Z  INFO 8921 --- [nio-8080-exec-3] c.e.api.ProductController                : Product search for 'wireless mouse'
+2025-05-18T12:21:38.207Z  INFO 8921 --- [nio-8080-exec-4] c.e.controller.AdminController           : Admin logged in: superadmin
+2025-05-18T12:22:44.718Z DEBUG 8921 --- [nio-8080-exec-5] c.e.service.CacheService                 : Cache hit: user::profile::192
+2025-05-18T12:23:33.066Z  INFO 8921 --- [nio-8080-exec-6] o.h.e.jdbc.internal.JdbcCoordinatorImpl  : JDBC connection released
+2025-05-18T12:24:05.484Z  WARN 8921 --- [nio-8080-exec-7] c.e.api.SearchController                 : Query too broad, refining results
+2025-05-18T12:25:17.007Z  INFO 8921 --- [nio-8080-exec-1] c.e.service.InvoiceService               : Invoice created: INV-90312
+2025-05-18T12:26:46.219Z  INFO 8921 --- [nio-8080-exec-2] c.e.scheduler.CleanupTask                : Temp files cleanup complete
+2025-05-18T12:27:51.893Z  INFO 8921 --- [nio-8080-exec-3] c.e.service.SubscriptionService          : Plan upgraded to PRO for user 812
+2025-05-18T12:28:10.328Z DEBUG 8921 --- [nio-8080-exec-4] c.e.api.WeatherClient                    : Fetching weather from API
+2025-05-18T12:29:59.147Z  INFO 8921 --- [nio-8080-exec-5] c.e.controller.HelpController            : FAQ page loaded
+2025-05-18T12:30:42.230Z  INFO 8921 --- [nio-8080-exec-6] c.e.service.ConfigService                : Remote config updated
+2025-05-18T12:31:25.501Z ERROR 8921 --- [nio-8080-exec-7] c.e.api.OrderController                  : Malformed order payload
+
+com.fasterxml.jackson.databind.JsonMappingException: Cannot deserialize value
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4565)
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3546)
+...
+2025-05-18T12:32:47.118Z  INFO 8921 --- [nio-8080-exec-1] c.e.service.ExportService                : CSV export completed in 431ms
+2025-05-18T12:34:20.054Z  INFO 8921 --- [nio-8080-exec-2] c.e.service.MailService                  : Weekly digest sent to 782 subscribers
+2025-05-18T12:35:56.905Z  INFO 8921 --- [nio-8080-exec-3] c.e.security.LoginAttemptService         : Failed login attempts reset for user 198
+2025-05-18T12:36:40.888Z  INFO 8921 --- [nio-8080-exec-4] c.e.service.LocationService              : Geolocation updated for IP: 172.16.2.91
+2025-05-18T12:38:07.613Z  WARN 8921 --- [nio-8080-exec-5] c.e.service.PaymentGateway               : Payment delay warning for order #11123
+2025-05-18T12:39:51.441Z  INFO 8921 --- [nio-8080-exec-6] c.e.api.SupportController                : Ticket #5492 marked as resolved
+2025-05-18T12:40:29.220Z  INFO 8921 --- [nio-8080-exec-7] c.e.service.SitemapGenerator             : Sitemap refreshed with 532 links
+2025-05-18T12:41:47.302Z  INFO 8921 --- [nio-8080-exec-1] c.e.controller.HomeController            : Homepage rendered
+2025-05-18T12:43:23.667Z  INFO 8921 --- [nio-8080-exec-2] c.e.service.StatusService                : Service status: OK (uptime: 24h 38m)
+2025-05-18T12:45:12.040Z  INFO 8921 --- [nio-8080-exec-3] c.e.repository.FeedbackRepository        : Saved feedback ID: 10832
+2025-05-18T12:47:08.963Z  INFO 8921 --- [nio-8080-exec-4] c.e.analytics.ClickTracker               : Tracked click on CTA: 'Try Now'
+2025-05-18T12:49:51.994Z  INFO 8921 --- [nio-8080-exec-5] c.e.scheduler.DataSyncJob                : Data sync with remote node completed
+2025-05-18T04:00:02.013Z  INFO 1123 --- [main] c.e.Application                          : Starting EcommerceApp v3.1.2
+2025-05-18T04:00:02.943Z  INFO 1123 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer : Tomcat started on port 8080
+2025-05-18T04:00:03.148Z  INFO 1123 --- [main] c.e.Application                          : Started in 2.355 seconds
+2025-05-18T04:01:10.447Z  INFO 1123 --- [scheduler-1] c.e.scheduler.MetricsJob                 : System metrics collection started
+2025-05-18T04:01:13.972Z  INFO 1123 --- [scheduler-1] c.e.scheduler.MetricsJob                 : System metrics logged: CPU 8%, MEM 62%
+2025-05-18T04:02:19.212Z  INFO 1123 --- [scheduler-2] c.e.scheduler.CacheEvictionTask          : Evicted 128 expired cache entries
+2025-05-18T04:03:00.344Z  INFO 1123 --- [nio-8080-exec-1] c.e.api.HealthController                 : Health check OK
+2025-05-18T04:03:58.211Z  INFO 1123 --- [nio-8080-exec-2] c.e.service.CronMonitor                  : Cron jobs heartbeat received
+2025-05-18T04:04:33.309Z DEBUG 1123 --- [scheduler-3] c.e.service.NotificationQueue            : Notification queue size: 4
+2025-05-18T04:05:04.814Z  INFO 1123 --- [scheduler-4] c.e.service.LogRotationTask              : Archived access.log.2025-05-17
+2025-05-18T04:06:27.440Z  INFO 1123 --- [scheduler-5] c.e.service.IndexRebuilder               : Rebuilding product search index
+2025-05-18T04:07:19.550Z  INFO 1123 --- [scheduler-5] c.e.service.IndexRebuilder               : Index rebuilt in 52.3 seconds
+2025-05-18T04:08:01.348Z  INFO 1123 --- [nio-8080-exec-3] c.e.api.LoginController                  : Login attempt from user: earlybird@example.com
+2025-05-18T04:08:01.489Z  INFO 1123 --- [nio-8080-exec-3] c.e.api.LoginController                  : Login successful: earlybird@example.com
+2025-05-18T04:09:45.101Z  INFO 1123 --- [scheduler-1] c.e.service.HeartbeatService             : Sending application heartbeat
+2025-05-18T04:10:31.710Z  INFO 1123 --- [scheduler-2] c.e.service.DbBackupService              : Starting nightly DB backup
+2025-05-18T04:12:58.031Z  INFO 1123 --- [scheduler-2] c.e.service.DbBackupService              : Backup completed: 412MB saved to /backups/2025-05-18.sql
+2025-05-18T04:14:20.214Z DEBUG 1123 --- [scheduler-3] c.e.service.AnalyticsService             : Batched 391 analytics events
+2025-05-18T04:15:55.409Z  INFO 1123 --- [nio-8080-exec-4] c.e.api.SupportController                : Support page accessed by user 183
+2025-05-18T04:17:36.874Z  INFO 1123 --- [scheduler-1] c.e.scheduler.SessionPurgeTask           : 73 expired sessions removed
+2025-05-18T04:19:04.290Z  INFO 1123 --- [nio-8080-exec-5] c.e.controller.HelpController            : Help article viewed: 'Password Reset'
+2025-05-18T04:21:48.110Z  INFO 1123 --- [scheduler-4] c.e.scheduler.DailyStatsJob              : Daily stats aggregation started
+2025-05-18T04:22:54.443Z  INFO 1123 --- [scheduler-4] c.e.scheduler.DailyStatsJob              : Aggregation complete in 66s
+2025-05-18T04:23:39.667Z  WARN 1123 --- [nio-8080-exec-6] c.e.service.LoginAttemptService          : Multiple failed logins for user: unknown@example.com
+2025-05-18T04:24:28.003Z ERROR 1123 --- [nio-8080-exec-6] c.e.service.LoginAttemptService          : Account locked due to repeated failures
+
+com.example.exception.AccountLockedException: Too many failed login attempts
+	at com.example.service.LoginAttemptService.check(LoginAttemptService.java:102)
+...
+2025-05-18T04:26:15.821Z  INFO 1123 --- [scheduler-5] c.e.scheduler.FeedbackDigestJob          : Compiled 25 user feedback entries
+2025-05-18T04:27:49.707Z  INFO 1123 --- [nio-8080-exec-1] c.e.api.ProductController                : Product page requested: ID 9231
+2025-05-18T04:28:56.118Z  INFO 1123 --- [scheduler-6] c.e.service.LogCompressor                : Compressed old logs from 2025-04
+2025-05-18T04:30:20.421Z  INFO 1123 --- [nio-8080-exec-2] c.e.service.AuditLogService              : User activity logged for userId=38
+2025-05-18T04:32:02.717Z DEBUG 1123 --- [scheduler-3] c.e.repository.MetricsRepository         : Wrote 23 metrics to DB
+2025-05-18T04:33:15.141Z  INFO 1123 --- [scheduler-1] c.e.service.SessionCleanupService        : Idle sessions purged: 6
+2025-05-18T04:35:11.600Z  INFO 1123 --- [nio-8080-exec-3] c.e.controller.SearchController          : Search query: "winter boots"
+2025-05-18T04:36:43.202Z  INFO 1123 --- [scheduler-5] c.e.service.ReportGenerator              : Generating hourly traffic report
+2025-05-18T04:37:39.004Z  INFO 1123 --- [scheduler-5] c.e.service.ReportGenerator              : Report saved: /reports/traffic_04h.json
+2025-05-18T04:38:11.544Z  INFO 1123 --- [scheduler-6] c.e.service.WeatherService               : Updated weather cache from API
+2025-05-18T04:40:27.091Z  INFO 1123 --- [scheduler-2] c.e.scheduler.FilePurgeTask              : Deleted 12 expired temp files
+2025-05-18T04:41:52.760Z DEBUG 1123 --- [nio-8080-exec-4] c.e.repository.UserRepository            : findByEmail('zane@example.com') returned null
+2025-05-18T04:43:39.847Z  INFO 1123 --- [scheduler-1] c.e.api.MonitoringController             : Status ping: OK
+2025-05-18T04:45:10.300Z  INFO 1123 --- [scheduler-3] c.e.service.DiskMonitorService           : Disk usage: 72% (moderate)
+2025-05-18T04:46:38.616Z  WARN 1123 --- [scheduler-4] c.e.service.SyncService                  : Sync delayed: remote node not available
+2025-05-18T04:47:22.504Z  INFO 1123 --- [scheduler-4] c.e.service.SyncService                  : Sync retry scheduled
+2025-05-18T04:49:03.339Z  INFO 1123 --- [nio-8080-exec-5] c.e.controller.HomeController            : Homepage requested from 192.168.1.203
+2025-05-18T05:01:22.918Z  INFO 1123 --- [scheduler-1] c.e.service.ApiUsageLogger               : API usage: 1243 requests last hour
+2025-05-18T05:03:47.620Z  INFO 1123 --- [nio-8080-exec-1] c.e.api.ProductController                : Product search: 'morning deals'
+2025-05-18T05:04:41.002Z  INFO 1123 --- [nio-8080-exec-2] c.e.service.ExportService                : Exported user list to CSV
+2025-05-18T05:05:33.777Z  INFO 1123 --- [scheduler-2] c.e.scheduler.TokenRefreshTask           : 45 tokens refreshed
+2025-05-18T05:06:40.010Z  INFO 1123 --- [scheduler-3] c.e.service.PurgeService                 : Cleared 5 obsolete notifications
+2025-05-18T05:07:56.129Z  INFO 1123 --- [nio-8080-exec-3] c.e.controller.BlogController            : Blog post viewed: 'Spring Boot for Beginners'
+2025-05-18T05:08:21.500Z  INFO 1123 --- [scheduler-4] c.e.scheduler.RssFeedUpdater             : RSS feed updated
+2025-05-18T05:09:17.287Z  INFO 1123 --- [scheduler-5] c.e.scheduler.SitemapRefreshJob          : Sitemap updated with 48 new URLs
+2025-05-18T04:00:02.013Z  INFO 1123 --- [main] c.e.Application: Starting EcommerceApp v3.1.2
+2025-05-18T04:00:02.215Z  DEBUG 1123 --- [main] o.s.c.c.ConfigFileApplicationListener: Located property source: file:./config/application.properties
+2025-05-18T04:00:02.943Z  INFO 1123 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer: Tomcat started on port 8080
+2025-05-18T04:00:03.148Z  INFO 1123 --- [main] c.e.Application: Started in 2.355 seconds
+2025-05-18T04:01:10.447Z  INFO 1123 --- [scheduler-1] c.e.scheduler.MetricsJob: System metrics collection started
+2025-05-18T04:01:11.550Z  WARN 1123 --- [scheduler-1] c.e.scheduler.MetricsJob: Database connection slow, latency 250ms
+2025-05-18T04:01:13.972Z  INFO 1123 --- [scheduler-1] c.e.scheduler.MetricsJob: System metrics logged: CPU 8%, MEM 62%
+2025-05-18T04:02:19.212Z  INFO 1123 --- [scheduler-2] c.e.scheduler.CacheEvictionTask: Evicted 128 expired cache entries
+2025-05-18T04:03:00.344Z  INFO 1123 --- [nio-8080-exec-1] c.e.api.HealthController: Health check OK
+2025-05-18T04:03:30.521Z  WARN 1123 --- [nio-8080-exec-3] o.h.j.i.QueryTranslatorFactoryInitiator: HHH000471: The Dialect org.hibernate.dialect.MySQLDialect does not support the setFirstResult/setMaxResults methods for pagination
+2025-05-18T04:03:58.211Z  INFO 1123 --- [nio-8080-exec-2] c.e.service.CronMonitor: Cron jobs heartbeat received
+2025-05-18T04:04:33.309Z DEBUG 1123 --- [scheduler-3] c.e.service.NotificationQueue: Notification queue size: 4
+2025-05-18T04:04:45.999Z ERROR 1123 --- [nio-8080-exec-4] c.e.api.OrderController: Order processing failed for order ID 8765, insufficient stock
+2025-05-18T04:05:04.814Z  INFO 1123 --- [scheduler-4] c.e.service.LogRotationTask: Archived access.log.2025-05-17
+2025-05-18T04:05:32.654Z DEBUG 1123 --- [nio-8080-exec-5] o.s.web.servlet.DispatcherServlet: DispatcherServlet 'dispatcherServlet' request processing completed
+2025-05-18T04:06:27.440Z  INFO 1123 --- [scheduler-5] c.e.service.IndexRebuilder: Rebuilding product search index
+2025-05-18T04:07:19.550Z  INFO 1123 --- [scheduler-5] c.e.service.IndexRebuilder: Product search index rebuilt in 42 seconds
+2025-05-18T04:08:01.234Z  WARN 1123 --- [nio-8080-exec-6] c.e.filter.RequestLoggingFilter: Request to /api/admin/sensitiveData logged from IP 192.168.1.100
+2025-05-18T04:08:42.789Z ERROR 1123 --- [http-nio-8080-ClientPoller] o.a.tomcat.util.net.NioEndpoint: Socket error occurred
+2025-05-18T04:09:15.321Z  INFO 1123 --- [task-executor-1] c.e.batch.OrderProcessor: Processed order ID 12345
+2025-05-18T04:09:56.876Z  WARN 1123 --- [task-executor-2] c.e.batch.OrderProcessor: Order ID 54321 failed processing, invalid address
+2025-05-18T04:10:22.444Z DEBUG 1123 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy: Securing GET /api/public/products
+2025-05-18T04:11:11.555Z ERROR 1123 --- [nio-8080-exec-8] o.a.c.c.C.[.[localhost].[/]: Exception Processing ErrorPage[errorCode=0, location=/error]
+2025-05-19T10:15:30.123Z  INFO 4567 --- [main] c.e.Application: Starting EcommerceApp v3.1.2
+2025-05-19T10:15:30.325Z  DEBUG 4567 --- [main] o.s.c.c.ConfigFileApplicationListener: Located property source: file:./config/application.properties
+2025-05-19T10:15:31.055Z  INFO 4567 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer: Tomcat started on port 8080
+2025-05-19T10:15:31.260Z  INFO 4567 --- [main] c.e.Application: Started in 2.487 seconds
+2025-05-19T10:16:40.557Z  INFO 4567 --- [scheduler-1] c.e.scheduler.MetricsJob: System metrics collection started
+2025-05-19T10:16:41.660Z  WARN 4567 --- [scheduler-1] c.e.scheduler.MetricsJob: Database connection slow, latency 280ms
+2025-05-19T10:16:44.082Z  INFO 4567 --- [scheduler-1] c.e.scheduler.MetricsJob: System metrics logged: CPU 10%, MEM 65%
+2025-05-19T10:17:49.322Z  INFO 4567 --- [scheduler-2] c.e.scheduler.CacheEvictionTask: Evicted 130 expired cache entries
+2025-05-19T10:18:30.454Z  INFO 4567 --- [nio-8080-exec-1] c.e.api.HealthController: Health check OK
+2025-05-19T10:19:00.631Z  WARN 4567 --- [nio-8080-exec-3] o.h.j.i.QueryTranslatorFactoryInitiator: HHH000471: The Dialect org.hibernate.dialect.MySQLDialect does not support the setFirstResult/setMaxResults methods for pagination
+2025-05-19T10:19:28.321Z  INFO 4567 --- [nio-8080-exec-2] c.e.service.CronMonitor: Cron jobs heartbeat received
+2025-05-19T10:20:03.419Z DEBUG 4567 --- [scheduler-3] c.e.service.NotificationQueue: Notification queue size: 5
+2025-05-19T10:20:16.109Z ERROR 4567 --- [nio-8080-exec-4] c.e.api.OrderController: Order processing failed for order ID 9876, insufficient stock
+2025-05-19T10:20:34.924Z  INFO 4567 --- [scheduler-4] c.e.service.LogRotationTask: Archived access.log.2025-05-18
+2025-05-19T10:21:02.764Z DEBUG 4567 --- [nio-8080-exec-5] o.s.web.servlet.DispatcherServlet: DispatcherServlet 'dispatcherServlet' request processing completed
+2025-05-19T10:21:57.540Z  INFO 4567 --- [scheduler-5] c.e.service.IndexRebuilder: Rebuilding product search index
+2025-05-19T10:22:49.650Z  INFO 4567 --- [scheduler-5] c.e.service.IndexRebuilder: Product search index rebuilt in 41 seconds
+2025-05-19T10:23:31.334Z  WARN 4567 --- [nio-8080-exec-6] c.e.filter.RequestLoggingFilter: Request to /api/admin/sensitiveData logged from IP 192.168.1.101
+2025-05-19T10:24:12.889Z ERROR 4567 --- [http-nio-8080-ClientPoller] o.a.tomcat.util.net.NioEndpoint: Socket error occurred
+2025-05-19T10:24:45.421Z  INFO 4567 --- [task-executor-1] c.e.batch.OrderProcessor: Processed order ID 67890
+2025-05-19T10:25:26.976Z  WARN 4567 --- [task-executor-2] c.e.batch.OrderProcessor: Order ID 98765 failed processing, invalid address
+2025-05-19T10:25:52.544Z DEBUG 4567 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy: Securing GET /api/public/products
+2025-05-19T10:26:41.655Z ERROR 4567 --- [nio-8080-exec-8] o.a.c.c.C.[.[localhost].[/]: Exception Processing ErrorPage[errorCode=0, location=/error]
+2025-05-19T10:27:10.765Z  INFO 4567 --- [nio-8080-exec-9] c.e.api.ProductController: Retrieved product details for product ID 1001
+2025-05-19T10:27:45.875Z DEBUG 4567 --- [nio-8080-exec-10] c.e.repository.ProductRepository: Executing query to fetch related products for product ID 1001
+2025-05-18T18:00:03.019Z  INFO 4321 --- [main] c.e.Application                          : Starting EcommerceApp v3.1.2
+2025-05-18T18:00:03.917Z  INFO 4321 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer : Tomcat started on port 8080
+2025-05-18T18:00:04.301Z  INFO 4321 --- [main] c.e.Application                          : Started EcommerceApp in 2.3 seconds
+2025-05-18T18:01:09.140Z  INFO 4321 --- [nio-8080-exec-1] c.e.api.ProductController                : Product page requested: ID 8743
+2025-05-18T18:01:10.992Z  INFO 4321 --- [nio-8080-exec-1] c.e.service.RecommendationService        : Fetched recommendations for product 8743
+2025-05-18T18:02:35.200Z  INFO 4321 --- [nio-8080-exec-2] c.e.api.CartController                   : User 205 added item ID 9342 to cart
+2025-05-18T18:03:21.604Z  INFO 4321 --- [nio-8080-exec-3] c.e.api.LoginController                  : Login successful: jennifer@example.com
+2025-05-18T18:04:12.112Z  INFO 4321 --- [nio-8080-exec-4] c.e.controller.CheckoutController        : Checkout initiated by user 205
+2025-05-18T18:05:23.715Z  INFO 4321 --- [nio-8080-exec-5] c.e.service.PaymentService               : Payment processed for order ID 829142
+2025-05-18T18:06:45.330Z  INFO 4321 --- [scheduler-1] c.e.service.NewsletterJob                : Sending daily newsletter to 12,304 users
+2025-05-18T18:08:16.671Z  INFO 4321 --- [scheduler-2] c.e.scheduler.OfferUpdater               : Updated 15 promotional banners
+2025-05-18T18:09:40.883Z  WARN 4321 --- [nio-8080-exec-6] c.e.api.PaymentController                : Payment attempt failed: insufficient funds
+2025-05-18T18:09:40.885Z ERROR 4321 --- [nio-8080-exec-6] c.e.api.PaymentController                : PaymentException: Card declined
+
+com.example.exception.PaymentException: Card declined
+	at com.example.service.PaymentService.process(PaymentService.java:142)
+...
+2025-05-18T18:11:01.500Z  INFO 4321 --- [scheduler-3] c.e.scheduler.LowStockNotifier           : Low stock alert sent for 7 SKUs
+2025-05-18T18:12:44.330Z  INFO 4321 --- [nio-8080-exec-7] c.e.api.SearchController                 : User searched for: "noise cancelling headphones"
+2025-05-18T18:14:28.444Z  INFO 4321 --- [nio-8080-exec-8] c.e.api.ProductController                : Product detail fetched: ID 1220
+2025-05-18T18:15:17.319Z  INFO 4321 --- [nio-8080-exec-9] c.e.service.WishlistService              : Added product 1220 to wishlist
+2025-05-18T18:16:12.774Z  INFO 4321 --- [nio-8080-exec-2] c.e.controller.ReviewController          : Review submitted by user 310
+2025-05-18T18:17:39.140Z  INFO 4321 --- [scheduler-1] c.e.scheduler.SessionCleanupTask         : Removed 132 expired sessions
+2025-05-18T18:19:21.920Z  INFO 4321 --- [nio-8080-exec-4] c.e.controller.FaqController             : FAQ page accessed
+2025-05-18T18:20:44.110Z  INFO 4321 --- [nio-8080-exec-1] c.e.api.ProductController                : Product page requested: ID 9421
+2025-05-18T18:22:30.211Z  INFO 4321 --- [scheduler-5] c.e.service.DashboardJob                 : Refreshed analytics dashboard
+2025-05-18T18:24:13.504Z  INFO 4321 --- [scheduler-6] c.e.service.EmailDigestJob               : Compiled and sent email digest to 87 subscribers
+2025-05-18T18:26:58.330Z  INFO 4321 --- [nio-8080-exec-5] c.e.controller.HelpController            : Help article viewed: "Track your order"
+2025-05-18T18:28:42.007Z  INFO 4321 --- [nio-8080-exec-6] c.e.api.LoginController                  : Login successful: alicia@example.com
+2025-05-18T18:30:23.180Z  INFO 4321 --- [nio-8080-exec-7] c.e.api.OrderController                  : Order history viewed by user 215
+2025-05-18T18:32:11.642Z  INFO 4321 --- [scheduler-2] c.e.service.ApiUsageLogger               : 4019 requests logged in last 10 mins
+2025-05-18T18:34:09.781Z  INFO 4321 --- [nio-8080-exec-8] c.e.api.ProductController                : Product page requested: ID 3294
+2025-05-18T18:35:41.802Z  WARN 4321 --- [nio-8080-exec-9] c.e.service.RecommendationService        : Timeout fetching ML recommendations
+2025-05-18T18:35:41.803Z ERROR 4321 --- [nio-8080-exec-9] c.e.service.RecommendationService        : java.util.concurrent.TimeoutException: Task timed out
+	at com.example.service.RecommendationService.fetch(RecommendationService.java:85)
+...
+2025-05-18T18:36:51.310Z  INFO 4321 --- [scheduler-3] c.e.scheduler.CartCleanupJob             : Removed 318 stale carts
+2025-05-18T18:38:17.974Z  INFO 4321 --- [scheduler-4] c.e.service.CacheRefresher               : Product cache refreshed (keys=192)
+2025-05-18T18:39:42.216Z  INFO 4321 --- [nio-8080-exec-1] c.e.api.ProductController                : Product quick view: ID 5829
+2025-05-18T18:40:30.118Z  INFO 4321 --- [scheduler-1] c.e.service.NotificationQueue            : 54 push notifications queued
+2025-05-18T18:42:56.374Z  INFO 4321 --- [nio-8080-exec-2] c.e.api.SupportController                : Support request submitted by user 293
+2025-05-18T18:43:33.229Z  INFO 4321 --- [nio-8080-exec-3] c.e.api.ProductController                : Product page requested: ID 2302
+2025-05-18T18:44:55.882Z  INFO 4321 --- [scheduler-5] c.e.scheduler.TokenRefreshTask           : Refreshed 216 access tokens
+2025-05-18T18:46:38.116Z  INFO 4321 --- [nio-8080-exec-4] c.e.controller.SearchController          : Search query received: "bluetooth speaker"
+2025-05-18T18:47:57.239Z  INFO 4321 --- [scheduler-6] c.e.scheduler.OfferExpiryChecker         : 3 expired offers removed
+2025-05-18T18:49:19.344Z  INFO 4321 --- [nio-8080-exec-5] c.e.api.LoginController                  : Login failed: wrong password for user mike@example.com
+2025-05-18T18:50:03.529Z  INFO 4321 --- [scheduler-1] c.e.scheduler.DbBackupTask               : Database backup started
+2025-05-18T18:51:45.608Z  INFO 4321 --- [scheduler-1] c.e.scheduler.DbBackupTask               : Backup complete: /backups/db_2025-05-18-ev.sql
+2025-05-18T18:53:12.777Z  INFO 4321 --- [nio-8080-exec-6] c.e.api.UserController                   : Profile update submitted by user 121
+2025-05-18T18:55:03.162Z  INFO 4321 --- [scheduler-2] c.e.service.EmailRetryService            : Retried 14 failed email sends
+2025-05-18T18:57:14.011Z  INFO 4321 --- [nio-8080-exec-7] c.e.api.CartController                   : User 215 removed item ID 1120 from cart
+2025-05-18T18:59:49.501Z  INFO 4321 --- [scheduler-3] c.e.scheduler.HourlyReportTask           : Compiled hourly system report
+2025-05-18T19:00:28.662Z  INFO 4321 --- [main] c.e.service.EventMonitor                 : Evening event summary initiated
+2025-05-18T19:02:33.783Z  INFO 4321 --- [nio-8080-exec-8] c.e.api.ProductController                : Product comparison started for: [1231, 9421, 8743]
+2025-05-18T19:04:27.415Z  INFO 4321 --- [scheduler-4] c.e.scheduler.NewsFetcherJob             : Fetched 12 tech news articles
+2025-05-19T23:58:00.100Z  INFO 7890 --- [nio-8080-exec-1] c.e.api.UserController: User 'john.doe' logged in successfully.
+2025-05-19T23:58:30.500Z  INFO 7890 --- [nio-8080-exec-2] c.e.api.ProductController: Retrieved product details for product ID 2001.
+2025-05-19T23:59:00.200Z  WARN 7890 --- [nio-8080-exec-3] c.e.service.PaymentService: Payment gateway experiencing high latency.
+2025-05-19T23:59:30.800Z  INFO 7890 --- [nio-8080-exec-4] c.e.api.OrderController: Order placed successfully, order ID 3001.
+2025-05-19T23:59:59.900Z  ERROR 7890 --- [nio-8080-exec-5] c.e.service.InventoryService: Critical inventory threshold reached for product ID 4001.
+2025-05-20T00:00:00.050Z  WARN 7890 --- [scheduler-1] c.e.scheduler.ResourceMonitor: High disk I/O detected on /data partition.
+2025-05-20T00:00:00.100Z  ERROR 7890 --- [scheduler-1] c.e.scheduler.ResourceMonitor: CPU usage spiked to 95% - potential security event.
+2025-05-20T00:00:00.150Z  WARN 7890 --- [scheduler-1] c.e.scheduler.ResourceMonitor: Network traffic anomaly detected - inbound traffic significantly increased.
+2025-05-20T00:00:00.200Z  ERROR 7890 --- [scheduler-1] c.e.scheduler.ResourceMonitor: Multiple failed login attempts detected from IP: 10.0.0.5.
+2025-05-20T00:00:00.250Z  ERROR 7890 --- [scheduler-1] c.e.scheduler.ResourceMonitor: File integrity check failed for /etc/shadow - possible intrusion.
+2025-05-20T00:00:00.300Z  ERROR 7890 --- [scheduler-1] c.e.scheduler.ResourceMonitor: Database connection pool exhausted - potential denial of service.
+2025-05-20T00:00:00.350Z  ERROR 7890 --- [scheduler-1] c.e.scheduler.ResourceMonitor: Application firewall blocked suspicious request - SQL injection attempt.
+2025-05-20T00:00:00.400Z  ERROR 7890 --- [scheduler-1] c.e.scheduler.ResourceMonitor: System compromised - shutting down application.
+2025-05-20T00:00:00.450Z  INFO 7890 --- [Thread-0] o.s.s.c.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2025-05-20T00:00:00.500Z  INFO 7890 --- [Thread-1] o.s.b.w.embedded.tomcat.TomcatWebServer: Stopping Tomcat
+2025-05-20T00:00:00.550Z  INFO 7890 --- [Thread-1] o.s.b.w.embedded.tomcat.TomcatWebServer: Tomcat stopped
+2025-05-20T00:00:00.600Z  INFO 7890 --- [Thread-0] o.s.c.support.DefaultLifecycleProcessor: Destroying beans in phase 2147483647
+2025-05-20T00:00:00.650Z  INFO 7890 --- [Thread-0] c.e.Application: Application shutdown complete.
+2025-05-20T23:58:00.100Z  INFO 8901 --- [nio-8080-exec-1] c.e.api.UserController: User 'jane.doe' logged in successfully.
+2025-05-20T23:58:30.500Z  INFO 8901 --- [nio-8080-exec-2] c.e.api.ProductController: Retrieved product details for product ID 2002.
+2025-05-20T23:59:00.200Z  WARN 8901 --- [nio-8080-exec-3] c.e.service.PaymentService: Payment gateway experiencing high latency.
+2025-05-20T23:59:30.800Z  INFO 8901 --- [nio-8080-exec-4] c.e.api.OrderController: Order placed successfully, order ID 3002.
+2025-05-20T23:59:59.900Z  ERROR 8901 --- [nio-8080-exec-5] c.e.service.InventoryService: Critical inventory threshold reached for product ID 4002.
+2025-05-21T00:00:00.050Z  WARN 8901 --- [scheduler-1] c.e.scheduler.ResourceMonitor: High disk I/O detected on /data partition.
+2025-05-21T00:00:00.100Z  ERROR 8901 --- [scheduler-1] c.e.scheduler.ResourceMonitor: CPU usage spiked to 95% - potential security event.
+2025-05-21T00:00:00.150Z  WARN 8901 --- [scheduler-1] c.e.scheduler.ResourceMonitor: Network traffic anomaly detected - inbound traffic significantly increased.
+2025-05-21T00:00:00.200Z  ERROR 8901 --- [scheduler-1] c.e.scheduler.ResourceMonitor: Multiple failed login attempts detected from IP: 10.0.0.6.
+2025-05-21T00:00:00.250Z  ERROR 8901 --- [scheduler-1] c.e.scheduler.ResourceMonitor: Database connection pool exhausted - potential denial of service.
+2025-05-21T00:00:00.300Z  ERROR 8901 --- [nio-8080-exec-6] c.e.api.ProductController: Failed to retrieve product list - database connection error.
+2025-05-21T00:00:00.350Z  ERROR 8901 --- [task-executor-1] c.e.batch.OrderProcessingTask: Batch order processing failed - could not acquire database lock.
+2025-05-21T00:00:00.400Z  ERROR 8901 --- [nio-8080-exec-7] o.a.tomcat.util.net.NioEndpoint: Socket error occurred - connection reset by peer.
+2025-05-21T00:00:00.450Z  WARN 8901 --- [nio-8080-exec-8] c.e.filter.RateLimitingFilter: Request blocked - rate limit exceeded for IP: 192.168.1.102.
+2025-05-21T00:00:00.500Z  ERROR 8901 --- [http-nio-8080-ClientPoller] o.a.tomcat.util.net.NioEndpoint: Socket error occurred.
+2025-05-21T00:05:00.100Z  INFO 8901 --- [scheduler-2] c.e.service.SecurityPatchApplicator: Applying security patch v1.2.3.
+2025-05-21T00:05:30.200Z  INFO 8901 --- [scheduler-2] c.e.service.SecurityPatchApplicator: Disabling vulnerable endpoint: /api/admin/sensitiveData.
+2025-05-21T00:06:00.300Z  INFO 8901 --- [scheduler-2] c.e.service.SecurityPatchApplicator: Restarting application firewall.
+2025-05-21T00:06:30.400Z  INFO 8901 --- [scheduler-2] c.e.service.SecurityPatchApplicator: Rebuilding database connection pool.
+2025-05-21T00:07:00.500Z  INFO 8901 --- [scheduler-2] c.e.service.SecurityPatchApplicator: Patch application complete.
+2025-05-21T00:07:30.600Z  INFO 8901 --- [scheduler-3] c.e.scheduler.ResourceMonitor: CPU usage normalized to 15%.
+2025-05-21T00:08:00.700Z  INFO 8901 --- [scheduler-3] c.e.scheduler.ResourceMonitor: Network traffic returned to baseline levels.
+2025-05-21T00:08:30.800Z  INFO 8901 --- [scheduler-3] c.e.scheduler.ResourceMonitor: Database connection pool healthy.
+2025-05-21T00:09:00.900Z  INFO 8901 --- [scheduler-3] c.e.scheduler.ResourceMonitor: System is stable.
+2025-05-21T00:10:00.100Z  INFO 8901 --- [nio-8080-exec-9] c.e.api.ProductController: Retrieved product details for product ID 2003.
+2025-05-21T00:10:30.200Z  INFO 8901 --- [nio-8080-exec-10] c.e.api.OrderController: Order placed successfully, order ID 3003.
+2025-05-18T18:00:03.019Z  INFO 4321 --- [main] c.e.Application                          : Starting EcommerceApp v3.1.2
+2025-05-18T18:00:03.917Z  INFO 4321 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer : Tomcat started on port 8080
+2025-05-18T18:00:04.301Z  INFO 4321 --- [main] c.e.Application                          : Started EcommerceApp in 2.3 seconds
+2025-05-18T18:01:09.140Z  INFO 4321 --- [nio-8080-exec-1] c.e.api.ProductController                : Product page requested: ID 8743
+2025-05-18T18:01:10.992Z  INFO 4321 --- [nio-8080-exec-1] c.e.service.RecommendationService        : Fetched recommendations for product 8743
+2025-05-18T18:02:35.200Z  INFO 4321 --- [nio-8080-exec-2] c.e.api.CartController                   : User 205 added item ID 9342 to cart
+2025-05-18T18:03:21.604Z  INFO 4321 --- [nio-8080-exec-3] c.e.api.LoginController                  : Login successful: jennifer@example.com
+2025-05-18T18:04:12.112Z  INFO 4321 --- [nio-8080-exec-4] c.e.controller.CheckoutController        : Checkout initiated by user 205
+2025-05-18T18:05:23.715Z  INFO 4321 --- [nio-8080-exec-5] c.e.service.PaymentService               : Payment processed for order ID 829142
+2025-05-18T18:06:45.330Z  INFO 4321 --- [scheduler-1] c.e.service.NewsletterJob                : Sending daily newsletter to 12,304 users
+2025-05-18T18:08:16.671Z  INFO 4321 --- [scheduler-2] c.e.scheduler.OfferUpdater               : Updated 15 promotional banners
+2025-05-18T18:09:40.883Z  WARN 4321 --- [nio-8080-exec-6] c.e.api.PaymentController                : Payment attempt failed: insufficient funds
+2025-05-18T18:09:40.885Z ERROR 4321 --- [nio-8080-exec-6] c.e.api.PaymentController                : PaymentException: Card declined
+
+com.example.exception.PaymentException: Card declined
+	at com.example.service.PaymentService.process(PaymentService.java:142)
+...
+2025-05-18T18:11:01.500Z  INFO 4321 --- [scheduler-3] c.e.scheduler.LowStockNotifier           : Low stock alert sent for 7 SKUs
+2025-05-18T18:12:44.330Z  INFO 4321 --- [nio-8080-exec-7] c.e.api.SearchController                 : User searched for: "noise cancelling headphones"
+2025-05-18T18:14:28.444Z  INFO 4321 --- [nio-8080-exec-8] c.e.api.ProductController                : Product detail fetched: ID 1220
+2025-05-18T18:15:17.319Z  INFO 4321 --- [nio-8080-exec-9] c.e.service.WishlistService              : Added product 1220 to wishlist
+2025-05-18T18:16:12.774Z  INFO 4321 --- [nio-8080-exec-2] c.e.controller.ReviewController          : Review submitted by user 310
+2025-05-18T18:17:39.140Z  INFO 4321 --- [scheduler-1] c.e.scheduler.SessionCleanupTask         : Removed 132 expired sessions
+2025-05-18T18:19:21.920Z  INFO 4321 --- [nio-8080-exec-4] c.e.controller.FaqController             : FAQ page accessed
+2025-05-18T18:20:44.110Z  INFO 4321 --- [nio-8080-exec-1] c.e.api.ProductController                : Product page requested: ID 9421
+2025-05-18T18:22:30.211Z  INFO 4321 --- [scheduler-5] c.e.service.DashboardJob                 : Refreshed analytics dashboard
+2025-05-18T18:24:13.504Z  INFO 4321 --- [scheduler-6] c.e.service.EmailDigestJob               : Compiled and sent email digest to 87 subscribers
+2025-05-18T18:26:58.330Z  INFO 4321 --- [nio-8080-exec-5] c.e.controller.HelpController            : Help article viewed: "Track your order"
+2025-05-18T18:28:42.007Z  INFO 4321 --- [nio-8080-exec-6] c.e.api.LoginController                  : Login successful: alicia@example.com
+2025-05-18T18:30:23.180Z  INFO 4321 --- [nio-8080-exec-7] c.e.api.OrderController                  : Order history viewed by user 215
+2025-05-18T18:32:11.642Z  INFO 4321 --- [scheduler-2] c.e.service.ApiUsageLogger               : 4019 requests logged in last 10 mins
+2025-05-18T18:34:09.781Z  INFO 4321 --- [nio-8080-exec-8] c.e.api.ProductController                : Product page requested: ID 3294
+2025-05-18T18:35:41.802Z  WARN 4321 --- [nio-8080-exec-9] c.e.service.RecommendationService        : Timeout fetching ML recommendations
+2025-05-18T18:35:41.803Z ERROR 4321 --- [nio-8080-exec-9] c.e.service.RecommendationService        : java.util.concurrent.TimeoutException: Task timed out
+	at com.example.service.RecommendationService.fetch(RecommendationService.java:85)
+...
+2025-05-18T18:36:51.310Z  INFO 4321 --- [scheduler-3] c.e.scheduler.CartCleanupJob             : Removed 318 stale carts
+2025-05-18T18:38:17.974Z  INFO 4321 --- [scheduler-4] c.e.service.CacheRefresher               : Product cache refreshed (keys=192)
+2025-05-18T18:39:42.216Z  INFO 4321 --- [nio-8080-exec-1] c.e.api.ProductController                : Product quick view: ID 5829
+2025-05-18T18:40:30.118Z  INFO 4321 --- [scheduler-1] c.e.service.NotificationQueue            : 54 push notifications queued
+2025-05-18T18:42:56.374Z  INFO 4321 --- [nio-8080-exec-2] c.e.api.SupportController                : Support request submitted by user 293
+2025-05-18T18:43:33.229Z  INFO 4321 --- [nio-8080-exec-3] c.e.api.ProductController                : Product page requested: ID 2302
+2025-05-18T18:44:55.882Z  INFO 4321 --- [scheduler-5] c.e.scheduler.TokenRefreshTask           : Refreshed 216 access tokens
+2025-05-18T18:46:38.116Z  INFO 4321 --- [nio-8080-exec-4] c.e.controller.SearchController          : Search query received: "bluetooth speaker"
+2025-05-18T18:47:57.239Z  INFO 4321 --- [scheduler-6] c.e.scheduler.OfferExpiryChecker         : 3 expired offers removed
+2025-05-18T18:49:19.344Z  INFO 4321 --- [nio-8080-exec-5] c.e.api.LoginController                  : Login failed: wrong password for user mike@example.com
+2025-05-18T18:50:03.529Z  INFO 4321 --- [scheduler-1] c.e.scheduler.DbBackupTask               : Database backup started
+2025-05-18T18:51:45.608Z  INFO 4321 --- [scheduler-1] c.e.scheduler.DbBackupTask               : Backup complete: /backups/db_2025-05-18-ev.sql
+2025-05-18T18:53:12.777Z  INFO 4321 --- [nio-8080-exec-6] c.e.api.UserController                   : Profile update submitted by user 121
+2025-05-18T18:55:03.162Z  INFO 4321 --- [scheduler-2] c.e.service.EmailRetryService            : Retried 14 failed email sends
+2025-05-18T18:57:14.011Z  INFO 4321 --- [nio-8080-exec-7] c.e.api.CartController                   : User 215 removed item ID 1120 from cart
+2025-05-18T18:59:49.501Z  INFO 4321 --- [scheduler-3] c.e.scheduler.HourlyReportTask           : Compiled hourly system report
+2025-05-18T19:00:28.662Z  INFO 4321 --- [main] c.e.service.EventMonitor                 : Evening event summary initiated
+2025-05-18T19:02:33.783Z  INFO 4321 --- [nio-8080-exec-8] c.e.api.ProductController                : Product comparison started for: [1231, 9421, 8743]
+2025-05-18T19:04:27.415Z  INFO 4321 --- [scheduler-4] c.e.scheduler.NewsFetcherJob             : Fetched 12 tech news articles
+2025-05-01T09:12:44.001Z  INFO 3245 --- [main] c.e.Application                          : Starting EcommerceApp v3.1.2
+2025-05-02T12:22:18.219Z  INFO 3245 --- [nio-8080-exec-2] c.e.api.LoginController                  : Login successful: sam@example.com
+2025-05-03T14:43:10.991Z  WARN 3245 --- [nio-8080-exec-4] c.e.service.PaymentService               : Payment gateway response delayed
+2025-05-04T16:11:32.452Z ERROR 3245 --- [nio-8080-exec-1] c.e.controller.OrderController           : OrderException: Stock not available
+
+com.example.exception.OrderException: Product ID 583 out of stock
+	at com.example.service.OrderService.create(OrderService.java:102)
+...
+2025-05-05T10:30:03.891Z  INFO 3245 --- [scheduler-1] c.e.scheduler.DailyMetricsTask           : Daily metrics processed
+2025-05-07T17:59:27.002Z  INFO 3245 --- [nio-8080-exec-5] c.e.api.ProductController                : Product page requested: ID 921
+2025-05-08T18:23:11.090Z  INFO 3245 --- [nio-8080-exec-6] c.e.api.CartController                   : Item ID 440 added to cart
+2025-05-09T11:12:44.009Z  INFO 3245 --- [scheduler-2] c.e.service.BackupService                : Database backup completed successfully
+2025-05-10T13:33:50.702Z ERROR 3245 --- [nio-8080-exec-3] c.e.api.PaymentController                : PaymentException: Invalid CVV
+
+com.example.exception.PaymentException: Invalid CVV
+	at com.example.service.PaymentService.validate(PaymentService.java:67)
+...
+2025-05-12T07:05:21.110Z  INFO 3245 --- [main] c.e.Application                          : Restart triggered by deployment
+2025-05-13T14:29:43.391Z  INFO 3245 --- [nio-8080-exec-9] c.e.api.SearchController                 : User searched: "wireless earbuds"
+2025-05-15T15:42:10.332Z  INFO 3245 --- [scheduler-3] c.e.scheduler.StockSyncJob              : Synced inventory with warehouse
+2025-05-16T20:15:38.927Z  INFO 3245 --- [nio-8080-exec-7] c.e.controller.CheckoutController        : Checkout completed for order 893122
+2025-05-17T08:47:28.123Z  INFO 3245 --- [nio-8080-exec-2] c.e.api.LoginController                  : Login failed: wrong credentials for user tom@example.com
+2025-05-18T18:00:03.019Z  INFO 3245 --- [main] c.e.Application                          : Restart complete
+2025-05-19T09:14:07.884Z  INFO 3245 --- [scheduler-1] c.e.scheduler.TokenCleanupTask           : 918 expired tokens removed
+2025-05-21T10:11:00.001Z  INFO 3245 --- [scheduler-2] c.e.scheduler.EmailRetryTask             : Retried 17 failed messages
+2025-05-22T15:13:18.764Z  WARN 3245 --- [nio-8080-exec-4] c.e.service.ProductService               : Product ID 423 missing metadata
+2025-05-23T11:33:12.784Z ERROR 3245 --- [scheduler-3] c.e.service.NewsletterJob                : SMTPException: 554 Transaction failed
+
+javax.mail.MessagingException: 554 Transaction failed
+	at com.example.email.EmailSender.send(EmailSender.java:211)
+...
+2025-05-24T19:12:01.012Z  INFO 3245 --- [nio-8080-exec-8] c.e.api.UserController                   : Profile updated: user ID 210
+2025-05-25T06:45:29.009Z  INFO 3245 --- [scheduler-4] c.e.service.OfferService                 : 3 offers expired and removed
+2025-05-26T08:23:11.090Z  INFO 3245 --- [scheduler-1] c.e.service.EventAggregator              : Monthly usage stats aggregation complete
+2025-05-27T14:43:10.991Z  INFO 3245 --- [nio-8080-exec-1] c.e.api.ProductController                : Quick view loaded for ID 3301
+2025-05-28T10:12:21.118Z  INFO 3245 --- [scheduler-5] c.e.scheduler.AnalyticsSnapshotTask      : Analytics snapshot created
+2025-05-29T18:47:28.123Z  INFO 3245 --- [nio-8080-exec-2] c.e.api.LoginController                  : Login successful: user928@example.com
+2025-05-30T22:01:43.212Z  WARN 3245 --- [nio-8080-exec-7] c.e.api.CartController                   : Attempted checkout with empty cart
+2025-05-31T23:59:59.999Z  INFO 3245 --- [scheduler-6] c.e.scheduler.MonthlyReportTask          : Generated full monthly report: /reports/may-2025-summary.pdf
+2025-05-18T18:35:41.802Z  WARN 4321 --- [nio-8080-exec-9] c.e.service.RecommendationService        : Timeout fetching ML recommendations
+2025-05-18T18:35:41.803Z ERROR 4321 --- [nio-8080-exec-9] c.e.service.RecommendationService        : java.util.concurrent.TimeoutException: Task timed out
+	at com.example.service.RecommendationService.fetch(RecommendationService.java:85)
+...
+2025-05-18T18:36:51.310Z  INFO 4321 --- [scheduler-3] c.e.scheduler.CartCleanupJob             : Removed 318 stale carts
+2025-05-22T18:38:17.974Z  INFO 4321 --- [scheduler-4] c.e.service.CacheRefresher               : Product cache refreshed (keys=192)
+2025-05-22T18:39:42.216Z  INFO 4321 --- [nio-8080-exec-1] c.e.api.ProductController                : Product quick view: ID 5829
+2025-05-22T18:40:30.118Z  INFO 4321 --- [scheduler-1] c.e.service.NotificationQueue            : 54 push notifications queued
+2025-05-22T18:42:56.374Z  INFO 4321 --- [nio-8080-exec-2] c.e.api.SupportController                : Support request submitted by user 293
+2025-05-22T18:43:33.229Z  INFO 4321 --- [nio-8080-exec-3] c.e.api.ProductController                : Product page requested: ID 2302
+2025-05-22T18:44:55.882Z  INFO 4321 --- [scheduler-5] c.e.scheduler.TokenRefreshTask           : Refreshed 216 access tokens
+2025-05-22T18:46:38.116Z  INFO 4321 --- [nio-8080-exec-4] c.e.controller.SearchController          : Search query received: "bluetooth speaker"
+2025-05-22T18:47:57.239Z  INFO 4321 --- [scheduler-6] c.e.scheduler.OfferExpiryChecker         : 3 expired offers removed
+2025-05-22T18:49:19.344Z  INFO 4321 --- [nio-8080-exec-5] c.e.api.LoginController                  : Login failed: wrong password for user mike@example.com
+2025-05-22T18:50:03.529Z  INFO 4321 --- [scheduler-1] c.e.scheduler.DbBackupTask               : Database backup started
+2025-05-22T18:51:45.608Z  INFO 4321 --- [scheduler-1] c.e.scheduler.DbBackupTask               : Backup complete: /backups/db_2025-05-22-ev.sql
+2025-05-22T18:53:12.777Z  INFO 4321 --- [nio-8080-exec-6] c.e.api.UserController                   : Profile update submitted by user 121
+2025-05-22T18:55:03.162Z  INFO 4321 --- [scheduler-2] c.e.service.EmailRetryService            : Retried 14 failed email sends
+2025-05-22T18:57:14.011Z  INFO 4321 --- [nio-8080-exec-7] c.e.api.CartController                   : User 215 removed item ID 1120 from cart
+2025-05-22T18:59:49.501Z  INFO 4321 --- [scheduler-3] c.e.scheduler.HourlyReportTask           : Compiled hourly system report
+2025-05-22T19:00:28.662Z  INFO 4321 --- [main] c.e.service.EventMonitor                 : Evening event summary initiated
+2025-05-22T19:02:33.783Z  INFO 4321 --- [nio-8080-exec-8] c.e.api.ProductController                : Product comparison started for: [1231, 9421, 8743]
+2025-05-22T19:04:27.415Z  INFO 4321 --- [scheduler-4] c.e.scheduler.NewsFetcherJob             : Fetched 12 tech news articles
+2025-05-01T09:12:44.001Z  INFO 3245 --- [main] c.e.Application                          : Starting EcommerceApp v3.1.2
+2025-05-02T12:22:18.219Z  INFO 3245 --- [nio-8080-exec-2] c.e.api.LoginController                  : Login successful: sam@example.com
+2025-05-03T14:43:10.991Z  WARN 3245 --- [nio-8080-exec-4] c.e.service.PaymentService               : Payment gateway response delayed
+2025-05-04T16:11:32.452Z ERROR 3245 --- [nio-8080-exec-1] c.e.controller.OrderController           : OrderException: Stock not available
+
+com.example.exception.OrderException: Product ID 583 out of stock
+	at com.example.service.OrderService.create(OrderService.java:102)
+...
+2025-05-05T10:30:03.891Z  INFO 3245 --- [scheduler-1] c.e.scheduler.DailyMetricsTask           : Daily metrics processed
+2025-05-07T17:59:27.002Z  INFO 3245 --- [nio-8080-exec-5] c.e.api.ProductController                : Product page requested: ID 921
+2025-05-08T18:23:11.090Z  INFO 3245 --- [nio-8080-exec-6] c.e.api.CartController                   : Item ID 440 added to cart
+2025-05-09T11:12:44.009Z  INFO 3245 --- [scheduler-2] c.e.service.BackupService                : Database backup completed successfully
+2025-05-10T13:33:50.702Z ERROR 3245 --- [nio-8080-exec-3] c.e.api.PaymentController                : PaymentException: Invalid CVV
+
+com.example.exception.PaymentException: Invalid CVV
+	at com.example.service.PaymentService.validate(PaymentService.java:67)
+...
+2025-05-12T07:05:21.110Z  INFO 3245 --- [main] c.e.Application                          : Restart triggered by deployment
+2025-05-13T14:29:43.391Z  INFO 3245 --- [nio-8080-exec-9] c.e.api.SearchController                 : User searched: "wireless earbuds"
+2025-05-15T15:42:10.332Z  INFO 3245 --- [scheduler-3] c.e.scheduler.StockSyncJob              : Synced inventory with warehouse
+2025-05-16T20:15:38.927Z  INFO 3245 --- [nio-8080-exec-7] c.e.controller.CheckoutController        : Checkout completed for order 893122
+2025-05-17T08:47:28.123Z  INFO 3245 --- [nio-8080-exec-2] c.e.api.LoginController                  : Login failed: wrong credentials for user tom@example.com
+2025-05-18T18:00:03.019Z  INFO 3245 --- [main] c.e.Application                          : Restart complete
+2025-05-19T09:14:07.884Z  INFO 3245 --- [scheduler-1] c.e.scheduler.TokenCleanupTask           : 918 expired tokens removed
+2025-05-21T10:11:00.001Z  INFO 3245 --- [scheduler-2] c.e.scheduler.EmailRetryTask             : Retried 17 failed messages
+2025-05-22T15:13:18.764Z  WARN 3245 --- [nio-8080-exec-4] c.e.service.ProductService               : Product ID 423 missing metadata
+2025-05-23T11:33:12.784Z ERROR 3245 --- [scheduler-3] c.e.service.NewsletterJob                : SMTPException: 554 Transaction failed
+
+javax.mail.MessagingException: 554 Transaction failed
+	at com.example.email.EmailSender.send(EmailSender.java:211)
+...
+2025-05-24T19:12:01.012Z  INFO 3245 --- [nio-8080-exec-8] c.e.api.UserController                   : Profile updated: user ID 210
+2025-05-25T06:45:29.009Z  INFO 3245 --- [scheduler-4] c.e.service.OfferService                 : 3 offers expired and removed
+2025-05-26T08:23:11.090Z  INFO 3245 --- [scheduler-1] c.e.service.EventAggregator              : Monthly usage stats aggregation complete
+2025-05-27T14:43:10.991Z  INFO 3245 --- [nio-8080-exec-1] c.e.api.ProductController                : Quick view loaded for ID 3301
+2025-05-28T10:12:21.118Z  INFO 3245 --- [scheduler-5] c.e.scheduler.AnalyticsSnapshotTask      : Analytics snapshot created
+2025-05-29T18:47:28.123Z  INFO 3245 --- [nio-8080-exec-2] c.e.api.LoginController                  : Login successful: user928@example.com
+2025-05-30T22:01:43.212Z  WARN 3245 --- [nio-8080-exec-7] c.e.api.CartController                   : Attempted checkout with empty cart
+2025-05-31T23:59:59.999Z  INFO 3245 --- [scheduler-6] c.e.scheduler.MonthlyReportTask          : Generated full monthly report: /reports/may-2025-summary.pdf

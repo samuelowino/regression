@@ -24,9 +24,12 @@ package com.kenyajug.regression.repository;
  */
 import com.kenyajug.regression.entities.AppLog;
 import com.kenyajug.regression.utils.DateTimeUtils;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -228,5 +231,56 @@ public non-sealed class AppLogRepository implements CrudRepository<AppLog>{
                 .query((resultSet,row) -> resultSet.getLong(1))
                 .single();
         return count > 0;
+    }
+    /**
+     * Retrieves a list of application logs filtered by the specified application ID and data source ID.
+     *
+     * @param applicationId the ID of the application whose logs are to be retrieved.
+     * @param datasourceId  the ID of the data source associated with the logs.
+     * @return a list of {@link AppLog} entries matching the given application and data source.
+     */
+    public List<AppLog> findByApplicationAndDatasource(String applicationId, String datasourceId) {
+        var selectSql = """
+                SELECT * FROM app_logs
+                WHERE
+                application_uuid = :application_uuid
+                AND
+                log_source = :log_source
+                ;
+                """;
+        return jdbcClient.sql(selectSql)
+                .param("application_uuid",applicationId)
+                .param("log_source",datasourceId)
+                .query((resultSet, row) -> new AppLog(
+                        resultSet.getString("uuid"),
+                        DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime(resultSet.getString("timestamp")),
+                        resultSet.getString("severity"),
+                        resultSet.getString("application_uuid"),
+                        resultSet.getString("log_source"),
+                        resultSet.getString("message")
+                ))
+                .list();
+    }
+    public List<AppLog> findBySeverityAndDate(String severity, LocalDate logsDate) {
+        var selectSql = """
+                SELECT * FROM app_logs
+                WHERE
+                severity = :severity
+                ;
+                """;
+        return jdbcClient.sql(selectSql)
+                .param("severity",severity)
+                .query((resultSet, row) -> new AppLog(
+                        resultSet.getString("uuid"),
+                        DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime(resultSet.getString("timestamp")),
+                        resultSet.getString("severity"),
+                        resultSet.getString("application_uuid"),
+                        resultSet.getString("log_source"),
+                        resultSet.getString("message")
+                ))
+                .list()
+                .stream()
+                .filter(e -> DateTimeUtils.isSameDay(e.timestamp().toLocalDate(),logsDate))
+                .toList();
     }
 }

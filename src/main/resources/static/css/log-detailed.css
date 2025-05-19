@@ -155,3 +155,94 @@ a:visited {
 .warn-row {
     color: #fbc02d; /* Yellow */
 }
+    .log-textarea {
+width: 100%;
+height: 300px;
+background-color: #121212;
+color: #f5f5f5;
+border: 1px solid #333;
+border-radius: 8px;
+padding: 1rem;
+font-family: "Courier New", Courier, monospace;
+resize: vertical;
+overflow: auto;
+box-sizing: border-box;
+scrollbar-width: thin;
+scrollbar-color: #4ea8de #1e1e1e;
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+.log-textarea::-webkit-scrollbar {
+width: 8px;
+}
+.log-textarea::-webkit-scrollbar-thumb {
+background-color: #4ea8de;
+border-radius: 8px;
+}
+.log-textarea::-webkit-scrollbar-track {
+background-color: #1e1e1e;
+}
+/* Metadata subtable inside the summary card */
+.metadata-table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 0.5rem;
+font-size: 0.95rem;
+background-color: #1a1a1a;
+border: 1px solid #2a2a2a;
+border-radius: 8px;
+overflow: hidden;
+}
+
+.metadata-table td {
+padding: 0.5rem 0.75rem;
+border-bottom: 1px solid #2a2a2a;
+}
+
+.metadata-table tr:last-child td {
+border-bottom: none;
+}
+
+.metadata-table td:first-child {
+color: #90cdf4; /* subtle blue for keys */
+font-weight: 600;
+width: 40%;
+}
+
+.metadata-table td:last-child {
+color: #e0e0e0;
+}
+.log-actions {
+display: flex;
+flex-wrap: wrap;
+gap: 0.75rem;
+margin-top: 1rem;
+}
+
+.action-button {
+background-color: #2c2c2c;
+color: #f5f5f5;
+border: 1px solid #444;
+padding: 0.5rem 1rem;
+font-size: 0.95rem;
+border-radius: 8px;
+cursor: pointer;
+transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.action-button:hover {
+background-color: #3b3b3b;
+color: #90cdf4;
+}
+.footer {
+text-align: center;
+padding: 1rem;
+background-color: #1a1a1a;
+color: #888;
+font-size: 0.9rem;
+border-top: 1px solid #333;
+}
+
+.footer p {
+margin: 0;
+}

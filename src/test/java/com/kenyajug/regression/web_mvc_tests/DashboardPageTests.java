@@ -118,6 +118,8 @@ public class DashboardPageTests {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("apps"))
                 .andExpect(model().attribute("apps",apps))
+                .andExpect(model().attributeExists("logs"))
+                .andExpect(model().attributeExists("logChartData"))
                 .andExpect(view().name("dashboard"));
     }
     @Test
@@ -165,6 +167,7 @@ public class DashboardPageTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("logsDatasourceList"))
+                .andExpect(model().attributeExists("logChartData"))
                 .andExpect(model().attribute("logsDatasourceList",datasourceList))
                 .andExpect(view().name("dashboard"));
     }

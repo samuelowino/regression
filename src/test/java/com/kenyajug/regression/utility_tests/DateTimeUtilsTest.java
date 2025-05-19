@@ -24,14 +24,17 @@ package com.kenyajug.regression.utility_tests;
  */
 import com.kenyajug.regression.utils.DateTimeUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 @Slf4j
 public class DateTimeUtilsTest {
     @Test
@@ -112,45 +115,81 @@ public class DateTimeUtilsTest {
         assertThat(utcTimeString).isEqualTo("2023-11-22 05:30:12 UTC");
     }
     @Test
-    void shouldFormatLocalDateTimeCorrectly() {
+    public void shouldFormatLocalDateTimeCorrectly() {
         var input = LocalDateTime.of(2023, 5, 8, 14, 30, 15);
         var expected = "2023-05-08 14:30:15";
         var result = DateTimeUtils.convertLocalDateTimeToString(input);
         assertThat(expected).isEqualTo(result);
     }
     @Test
-    void parsesValidTomcatTimestamp() {
+    public void parsesValidTomcatTimestamp() {
         String timestamp = "15-May-2025 14:32:10.213";
         LocalDateTime expected = LocalDateTime.of(2025, 5, 15, 14, 32, 10, 213_000_000);
         LocalDateTime actual = DateTimeUtils.fromTomcatLogTimestamp(timestamp);
         assertEquals(expected, actual);
     }
     @Test
-    void tomcatTimestampParsing_failsOnInvalidDateFormat() {
+    public void tomcatTimestampParsing_failsOnInvalidDateFormat() {
         String invalidTimestamp = "2025-05-15 14:32:10.213";
         assertThrows(Exception.class, () -> DateTimeUtils.fromTomcatLogTimestamp(invalidTimestamp));
     }
     @Test
-    void tomcatTimestampParsing_failsOnNullInput() {
+    public void tomcatTimestampParsing_failsOnNullInput() {
         assertThrows(NullPointerException.class, () -> DateTimeUtils.fromTomcatLogTimestamp(null));
     }
     @Test
-    void tomcatTimestampParsing_failsOnIncompleteTimestamp() {
+    public void tomcatTimestampParsing_failsOnIncompleteTimestamp() {
         String incomplete = "15-May-2025 14:32";
         assertThrows(Exception.class, () -> DateTimeUtils.fromTomcatLogTimestamp(incomplete));
     }
     @Test
-    void tomcatTimestampParsing_parsesAnotherValidTimestamp() {
+    public void tomcatTimestampParsing_parsesAnotherValidTimestamp() {
         String timestamp = "01-Jan-2023 00:00:00.000";
         LocalDateTime expected = LocalDateTime.of(2023, 1, 1, 0, 0, 0, 0);
         LocalDateTime actual = DateTimeUtils.fromTomcatLogTimestamp(timestamp);
         assertEquals(expected, actual);
     }
     @Test
-    void tomcatTimestampParsing_Case2_parsesAnotherValidTimestamp() {
+    public void tomcatTimestampParsing_Case2_parsesAnotherValidTimestamp() {
         String timestamp = "2025-05-16T09:31:14.088Z";
         LocalDateTime expected = LocalDateTime.of(2025, 5, 16, 9, 31, 14, 88_000_000);
         LocalDateTime actual = DateTimeUtils.fromTomcatLogTimestamp(timestamp);
         assertEquals(expected, actual);
+    }
+    @Test
+    @DisplayName("Should format LocalTime to HH:mm:ss.SSS correctly")
+    public void testLocalTimeStringFormatsCorrectly() {
+        var time = LocalTime.of(14, 5, 9, 123_000_000);
+        String formatted = DateTimeUtils.localTimeString(time);
+        assertEquals("14:05:09.123", formatted);
+    }
+    @Test
+    @DisplayName("Should include leading zeros and millisecond precision")
+    public void testLocalTimeStringZeroPadding() {
+        LocalTime time = LocalTime.of(3, 4, 5, 7_000_000);
+        String formatted = DateTimeUtils.localTimeString(time);
+        assertEquals("03:04:05.007", formatted);
+    }
+    @Test
+    public void shouldCheckSameDayDatesTest(){
+        var date1 = LocalDate.of(2000,11,10);
+        var date2 = LocalDate.of(2000,11,10);
+        var isSameDay = DateTimeUtils.isSameDay(date1,date2);
+        assertThat(isSameDay).isTrue();
+        date1 = LocalDate.of(1995,5,20);
+        date2 = LocalDate.of(2025,8,31);
+        isSameDay = DateTimeUtils.isSameDay(date1,date2);
+        assertThat(isSameDay).isFalse();
+    }
+    @Test
+    @DisplayName("Should contain 24 LocalTime entries from 00:00 to 23:00")
+    void shouldContainAll24Hours() {
+        List<LocalTime> allHours = DateTimeUtils.ALL_HOURS;
+        assertEquals(24, allHours.size(), "List should contain 24 time entries");
+        for (int i = 0; i < 24; i++) {
+            LocalTime expectedTime = LocalTime.of(i, 0);
+            assertEquals(expectedTime, allHours.get(i), "Hour at index " + i + " should be " + expectedTime);
+        }
+        log.info("{}",allHours);
     }
 }
