@@ -22,13 +22,13 @@ package com.kenyajug.regression.utils;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 public final class DateTimeUtils {
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -36,6 +36,9 @@ public final class DateTimeUtils {
     public static final String TIMESTAMP_REGEX = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} UTC$";
     public static final Pattern TIMESTAMP_PATTERN = Pattern.compile(TIMESTAMP_REGEX);
     public static final ZoneId UTC_TIME_ZONE_ID = ZoneId.of("UTC");
+    public static final List<LocalTime> ALL_HOURS = IntStream.range(0, 24)
+            .mapToObj(hour -> LocalTime.of(hour, 0))
+            .collect(Collectors.toList());
     private DateTimeUtils(){}
     /**
      * Converts a {@link LocalDate} to a formatted string using {@code DATE_FORMATTER}.
@@ -158,5 +161,12 @@ public final class DateTimeUtils {
             var temporal = formatter.parse(timestamp);
             return LocalDateTime.from(temporal);
         }
+    }
+    public static String localTimeString(LocalTime time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
+        return time.format(formatter);
+    }
+    public static boolean isSameDay(LocalDate date1, LocalDate date2) {
+        return date1.isEqual(date2);
     }
 }

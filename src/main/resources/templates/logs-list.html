@@ -25,9 +25,9 @@
 -->
 <head>
     <meta charset="UTF-8">
-    <title>Regression Dashboard</title>
+    <title>Regression - Logs</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="../static/css/dashboard.css" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="../static/css/logs-list.css" th:href="@{/css/logs-list.css}">
 </head>
 <body>
 <div class="sidebar">
@@ -42,55 +42,64 @@
     </div>
 </div>
 <div class="main-content">
-    <h2>Welcome to the Regression Dashboard</h2>
-    <div class="card">
-        <h3>📈 Incoming Logs Today</h3>
-        <canvas id="todayLogsChart"></canvas>
-    </div>
-    <div class="card">
-        <h3><span>🧩 Connected Apps and Platforms</span> <span><a href="/add/datasource" th:href="@{/add/application}">Create New Application</a></span></h3>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Environment</th>
-                <th>Status</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="app : ${apps}">
-                <td th:text="${app.name}">App Name</td>
-                <td th:text="${app.runtimeEnvironment}">API</td>
-                <td>Connected 🛜</td>
-            </tr>
-            </tbody>
-        </table>
+    <h2>Logs 🪵</h2>
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <form method="get" th:action="@{/logs/filtered}" th:object="${logsFilter}"
+              style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+
+            <!-- Date -->
+            <label for="logDate" style="font-weight: bold;">📅 Date:</label>
+            <input type="date" id="logDate" th:field="*{selectedDate}"
+                   style="padding: 0.5rem; border-radius: 6px; background-color: #1e1e1e; color: #f5f5f5; border: 1px solid #444;" />
+            <div th:if="${#fields.hasErrors('selectedDate')}" th:errors="*{selectedDate}" style="color: red;"></div>
+
+            <!-- Severity -->
+            <label for="selectedSeverity" style="font-weight: bold;">Severity:</label>
+            <select id="selectedSeverity" th:field="*{selectedSeverity}"
+                    style="padding: 0.5rem; border-radius: 6px; background-color: #1e1e1e; color: #f5f5f5; border: 1px solid #444;">
+                <option th:value="'All'">All</option>
+                <option th:value="'INFO'">INFO</option>
+                <option th:value="'WARN'">WARN</option>
+                <option th:value="'ERROR'">ERROR</option>
+            </select>
+            <div th:if="${#fields.hasErrors('selectedSeverity')}" th:errors="*{selectedSeverity}" style="color: red;"></div>
+
+            <!-- Application -->
+            <label for="selectedApp" style="font-weight: bold;">Application:</label>
+            <select id="selectedApp" th:field="*{selectedAppId}"
+                    style="padding: 0.5rem; border-radius: 6px; background-color: #1e1e1e; color: #f5f5f5; border: 1px solid #444;">
+                <option th:value="''">All</option>
+                <option th:each="app : ${applications}"
+                        th:value="${app.uuid}"
+                        th:text="${app.name}">
+                </option>
+            </select>
+            <div th:if="${#fields.hasErrors('selectedAppId')}" th:errors="*{selectedAppId}" style="color: red;"></div>
+
+            <!-- Data Source -->
+            <label for="selectedSource" style="font-weight: bold;">Data Source:</label>
+            <select id="selectedSource" th:field="*{selectedSourceId}"
+                    style="padding: 0.5rem; border-radius: 6px; background-color: #1e1e1e; color: #f5f5f5; border: 1px solid #444;">
+                <option th:value="''">All</option>
+                <option th:each="source : ${dataSources}"
+                        th:value="${source.uuid}"
+                        th:text="${source.name}">
+                </option>
+            </select>
+            <div th:if="${#fields.hasErrors('selectedSourceId')}" th:errors="*{selectedSourceId}" style="color: red;"></div>
+
+            <!-- Submit -->
+            <button type="submit"
+                    style="padding: 0.5rem 1rem; border-radius: 6px; background-color: #1f6feb; color: white; border: none;">
+                Filter
+            </button>
+        </form>
     </div>
 
     <div class="card">
-        <h3><span>📁 Data Sources</span> <span><a href="/add/data/source" th:href="@{/add/data/source}">Create New Datasource</a></span></h3>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Source Type</th>
-                <th>Created</th>
-                <th>Path (If Provided)</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="source : ${logsDatasourceList}">
-                <td th:text="${source.name}">Local File</td>
-                <td th:text="${source.sourceType}">local</td>
-                <td th:text="${source.createdAt}">2025-05-01</td>
-                <td th:text="${source.logFilePath}">2025-05-01</td>
-            </tr>
-            </tbody>
-        </table>
+        <canvas id="logSeverityChart"></canvas>
     </div>
-
     <div class="card">
-        <h3><span>🕒 Today Logs</span> <span><a href="/add/logs" th:href="@{/add/logs}">Submit Logs</a></span></h3>
         <table>
             <thead>
             <tr>
@@ -124,9 +133,9 @@
         </table>
     </div>
 </div>
-<!--<script src ="../static/js/charts.js" th:src="@{/js/charts.js}"></script>-->
+<!--<script src ="../static/js/logs-bar.js" th:src="@{/js/logs-bar.js}"></script>-->
 <script th:inline="javascript">
-    const ctx = document.getElementById('todayLogsChart').getContext('2d');
+    const ctx = document.getElementById('logSeverityChart').getContext('2d');
 
     const hours = [...Array(24).keys()].map(h => `${h.toString().padStart(2, '0')}:00`);
 
@@ -135,17 +144,13 @@
     const datasets = logChartData.map(entry => ({
         label: entry.severity,
         data: entry.hourlyCounts,
-        fill: false,
-        borderColor: entry.severity === 'ERROR' ? '#e53935' :
-                     entry.severity === 'WARN' ? '#fbc02d' : '#1e88e5',
-        backgroundColor: entry.severity === 'ERROR' ? '#e57373' :
-                         entry.severity === 'WARN' ? '#fff176' : '#64b5f6',
-        tension: 0.3, // smooth curves
-        pointRadius: 3
+        backgroundColor: entry.severity === 'ERROR' ? '#e53935' :
+                         entry.severity === 'WARN' ? '#fbc02d' : '#1e88e5',
+        stack: 'logs'
     }));
 
     new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: {
             labels: hours,
             datasets: datasets
@@ -166,6 +171,7 @@
             },
             scales: {
                 x: {
+                    stacked: true,
                     ticks: {
                         color: '#ccc'
                     },
@@ -174,6 +180,7 @@
                     }
                 },
                 y: {
+                    stacked: true,
                     beginAtZero: true,
                     ticks: {
                         color: '#ccc'

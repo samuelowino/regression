@@ -26,12 +26,15 @@ import com.kenyajug.regression.entities.AppLog;
 import com.kenyajug.regression.repository.AppLogRepository;
 import com.kenyajug.regression.utils.DateTimeUtils;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.Comparator;
 import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
@@ -231,5 +234,60 @@ public class AppLogRepositoryTest {
         var timestamp = DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime("2025-08-11 11:09:22 UTC");
         var exists = repository.existsByTimestampApplicationAndSource(timestamp,appId,"data_source_uuid");
         assertThat(exists).isFalse();
+    }
+    @Test
+    public void shouldFindLogsByApplicationAndDatasourceTest(){
+        var applicationId = "8e468a74-8d2d-4784-981e-5f195071b50a";
+        var datasourceId = "5066eb2e-06dd-4e82-a0ba-9d771132ca09";
+        var entity = new AppLog(
+                "UUID1",
+                DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime("2025-08-11 11:09:22 UTC"),
+                "WARN",
+                applicationId,
+                datasourceId,
+                "Object not found exception"
+        );
+        repository.save(entity);
+        var exists = repository.existsById(entity.uuid());
+        assertThat(exists).isTrue();
+        var logs = repository.findByApplicationAndDatasource(applicationId,datasourceId);
+        assertThat(logs).isNotEmpty();
+        assertThat(logs.size()).isEqualTo(1);
+        var appLog = logs.getFirst();
+        assertThat(appLog).isNotNull();
+        assertThat(appLog.uuid()).isEqualTo(entity.uuid());
+        assertThat(DateTimeUtils.localDateTimeToUTCTime(appLog.timestamp())).isEqualTo("2025-08-11 11:09:22 UTC");
+        assertThat(appLog.severity()).isEqualTo("WARN");
+        assertThat(appLog.applicationId()).isEqualTo(applicationId);
+        assertThat(appLog.logSource()).isEqualTo(datasourceId);
+        assertThat(appLog.message()).isEqualTo("Object not found exception");
+    }
+    @Test
+    @DisplayName("Should find logs by severity and date")
+    public void shouldFindBySeverityAndDateTest(){
+        var entity1 = new AppLog(
+                "UUID1",
+                DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime("1990-11-22 11:09:22 UTC"),
+                "WARN",
+                appId,
+                "Chrome LTS  version 132.0.6834.223",
+                "Object not found exception"
+        );
+        var entity2 = new AppLog(
+                "UUID2",
+                DateTimeUtils.convertZonedUTCTimeStringToLocalDateTime("1990-11-22 10:49:50 UTC"),
+                "WARN",
+                appId,
+                "Chrome LTS  version 132.0.6834.223",
+                "Object not found exception"
+        );
+        repository.save(entity1);
+        repository.save(entity2);
+        var entities = repository.findAll();
+        assertThat(entities).isNotEmpty();
+        var date = LocalDate.of(1990,11,22);
+        var filtered = repository.findBySeverityAndDate("WARN",date);
+        assertThat(filtered).isNotEmpty();
+        assertThat(filtered.size()).isEqualTo(2);
     }
 }
