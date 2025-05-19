@@ -88,6 +88,7 @@ public class IngestionService implements IIngestionService{
                 log.error("Encountered IO exception while reading raw logs from file {}: {}",
                         logsDataSource.logFilePath(),
                         ex.getLocalizedMessage());
+                ex.printStackTrace();
                 throw new IOException("Encountered IO exception while reading raw logs from file");
             }
         }

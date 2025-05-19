@@ -285,12 +285,12 @@ N/A - Documentation changes only
 
 **Overall Coverage: 100.00% ✅**
 
-| Metric      | Covered | Missed | Total | Coverage |
-|-------------|---------|--------|--------|----------|
-| INSTRUCTION | 3524 | 0 | 3524 | 100.00% ✅ |
-| LINE | 858 | 0 | 858 | 100.00% ✅ |
-| BRANCH | 88 | 0 | 88 | 100.00% ✅ |
-| METHOD | 184 | 0 | 184 | 100.00% ✅ |
-| CLASS | 36 | 0 | 36 | 100.00% ✅ |
-| COMPLEXITY | 229 | 0 | 229 | 100.00% ✅ |
+| Metric      | Covered | Missed | Total | Coverage  |
+|-------------|---------|--------|-------|-----------|
+| INSTRUCTION | 3524    | 0      | 3524  | 100.00% ✅ |
+| LINE        | 858     | 0      | 858   | 100.00% ✅ |
+| BRANCH      | 88      | 0      | 88    | 100.00% ✅ |
+| METHOD      | 184     | 0      | 184   | 100.00% ✅ |
+| CLASS       | 36      | 0      | 36    | 100.00% ✅ |
+| COMPLEXITY  | 229     | 0      | 229   | 100.00% ✅ |
 <!-- coverage end -->
