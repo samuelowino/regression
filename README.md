@@ -73,22 +73,6 @@ Once the application is running, you can access the API documentation at:
 - Swagger UI: `http://localhost:8080/swagger-ui.html`
 - OpenAPI Specification: `http://localhost:8080/v3/api-docs`
 
-### Environment Variables
-
-The following environment variables can be configured:
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `SERVER_PORT` | Port to run the application | 8080 |
-| `SPRING_PROFILES_ACTIVE` | Active Spring profile | dev |
-| `JWT_SECRET` | Secret key for JWT tokens | (required in production) |
-
-### Troubleshooting
-
-- If you encounter database issues, ensure you have write permissions in the project directory
-- For port conflicts, change the `SERVER_PORT` environment variable
-- Check the application logs for detailed error messages
-
 ### Development Workflow
 
 1. **Running Tests**
@@ -121,49 +105,7 @@ The following environment variables can be configured:
 
 3. Push your changes and create a pull request
 
-### Support
 
-For additional help or questions:
-- Open an issue on GitHub
-- Check the [Wiki](https://github.com/kenya-jug/regression/wiki) for detailed documentation
-- Join our [Discord community](https://discord.gg/kenya-jug)
-
-## Description
-This PR addresses issue #16 by adding a comprehensive setup guide to the README.md file. The changes provide clear instructions for developers to set up and run the project locally.
-
-## Changes Made
-- Added **Prerequisites** section listing required software and tools
-- Added **Local Development Setup** with step-by-step instructions:
-  - Repository cloning
-  - Database configuration
-  - Build process
-  - Running the application
-- Added **Docker Deployment** instructions
-- Added **API Documentation** access information
-- Added **Environment Variables** configuration table
-- Added **Troubleshooting** section for common issues
-- Added **Development Workflow** section covering:
-  - Running tests
-  - Code style checks
-  - Documentation generation
-- Added **Contributing** guidelines
-- Added **Support** section with community resources
-
-## Testing
-- [x] Verified all code blocks render correctly in GitHub
-- [x] Tested all commands in the guide
-- [x] Ensured proper formatting and markdown syntax
-
-## Related Issues
-Closes #16
-
-## Screenshots
-N/A - Documentation changes only
-
-## Additional Notes
-- The setup guide follows best practices for Spring Boot applications
-- Instructions are clear and suitable for both new and experienced developers
-- Added both local development and Docker deployment options
 
 
 
