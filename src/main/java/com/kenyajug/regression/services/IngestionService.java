@@ -127,7 +127,17 @@ public class IngestionService implements IIngestionService{
     @Override
     public String collectRawLogs(LogsDataSource dataSource) throws IOException {
         var path = Path.of(dataSource.logFilePath());
-        return Files.readString(path);
+        var builder = new StringBuilder();
+        try(var reader = Files.newBufferedReader(path)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            log.error("Error reading log file {}: {}", path.getFileName(), e.getMessage());
+            throw e;
+        }
+        return builder.toString();
     }
     /**
      * Processes structured trace groups extracted from raw logs and composes application log entries
