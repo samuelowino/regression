@@ -10,50 +10,16 @@ A Spring Boot server for collecting, storing, and analyzing error logs with REST
 **Overview:**
 **Regression** is a Spring Boot-based server for collecting, storing, and analyzing application error logs. It provides RESTful APIs for log ingestion and retrieval, with AI-driven analysis to detect anomalies, trends, and root causes.
 
-### **Functional Requirements:**
-
-1. **Log Ingestion API**
-
-   * Accept error logs in JSON format via HTTP POST.
-   * Support metadata: timestamp, severity, application ID, source, etc.
-
-2. **Log Storage**
-
-   * Persist logs in a scalable database (e.g., PostgreSQL, MongoDB).
-   * Index logs for fast search and filtering.
-
-3. **Log Retrieval API**
-
-   * Fetch logs via GET endpoints with filters (time range, severity, keyword).
-
-4. **AI-Powered Analysis**
-
-   * Analyze logs using machine learning models to:
-
-     * Detect anomalies and outliers.
-     * Group similar error patterns.
-     * Suggest probable root causes.
-
-5. **Authentication & Authorization**
-
-   * Secure API endpoints using JWT or OAuth2.
-   * Role-based access control (e.g., viewer, admin).
-
-6. **Monitoring & Metrics**
-
-   * Expose system metrics (e.g., log rate, error types) via an endpoint (e.g., `/metrics`).
 
 ---
 
-### **Non-Functional Requirements:**
+<img width="1184" alt="Screenshot 2025-05-20 at 15 32 17" src="https://github.com/user-attachments/assets/b32085f6-4d35-4e35-9ad9-7dae4a27f532" />
 
-* **Performance:** Handle high log volumes with minimal latency.
-* **Scalability:** Support containerized deployment and clustering.
-* **Extensibility:** Pluggable architecture for custom AI models or storage backends.
-* **Reliability:** Fault-tolerant with retries and backup mechanisms.
+---
 
+https://github.com/user-attachments/assets/50589dbc-0b7f-4536-a047-e82c18b078d5
 
-## Setup Guide
+---
 
 ### Prerequisites
 
