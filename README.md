@@ -190,17 +190,20 @@ Once the application is running, you can access the API documentation at:
 
 
 
+
+
+
 <!-- coverage start -->
 ## 📊 Code Coverage Report
 
-**Overall Coverage: 100.00% ✅**
+**Overall Coverage: 0% ✅**
 
-| Metric      | Covered | Missed | Total | Coverage  |
-|-------------|---------|--------|-------|-----------|
-| INSTRUCTION | 3524    | 0      | 3524  | 100.00% ✅ |
-| LINE        | 858     | 0      | 858   | 100.00% ✅ |
-| BRANCH      | 88      | 0      | 88    | 100.00% ✅ |
-| METHOD      | 184     | 0      | 184   | 100.00% ✅ |
-| CLASS       | 36      | 0      | 36    | 100.00% ✅ |
-| COMPLEXITY  | 229     | 0      | 229   | 100.00% ✅ |
+| Metric      | Covered | Missed | Total | Coverage |
+|-------------|---------|--------|--------|----------|
+| INSTRUCTION |  |  | 0 | 0% ✅ |
+| LINE |  |  | 0 | 0% ✅ |
+| BRANCH |  |  | 0 | 0% ✅ |
+| METHOD |  |  | 0 | 0% ✅ |
+| CLASS |  |  | 0 | 0% ✅ |
+| COMPLEXITY |  |  | 0 | 0% ✅ |
 <!-- coverage end -->
